@@ -23,6 +23,7 @@ namespace UniRx
 
     public static partial class ObservableWWW
     {
+        #pragma warning disable 0618
         public static IObservable<string> Get(string url, Hash headers = null, IProgress<float> progress = null)
         {
             return ObservableUnity.FromCoroutine<string>((observer, cancellation) => FetchText(new WWW(url, null, (headers ?? new Hash())), observer, progress, cancellation));

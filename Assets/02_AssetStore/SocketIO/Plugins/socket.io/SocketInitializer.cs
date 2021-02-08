@@ -119,6 +119,7 @@ namespace socket.io {
             // Try get WebSocketTrigger instance if a connection already established _baseUrl.
             var webSocketTrigger = SocketManager.Instance.GetWebSocketTrigger(BaseUrl);
             if (webSocketTrigger == null || !webSocketTrigger.IsConnected) {
+                #pragma warning disable 0618
                 var www = new WWW(PollingUrl);
 
                 while (!www.isDone && !cancelToken.IsCancellationRequested )
