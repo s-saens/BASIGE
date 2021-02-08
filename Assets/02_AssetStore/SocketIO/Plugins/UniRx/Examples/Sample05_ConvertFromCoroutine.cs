@@ -17,6 +17,7 @@ namespace UniRx.Examples
         // IEnumerator with callback
         static IEnumerator GetWWWCore(string url, IObserver<string> observer, CancellationToken cancellationToken)
         {
+            #pragma warning disable 0618
             var www = new UnityEngine.WWW(url);
             while (!www.isDone && !cancellationToken.IsCancellationRequested)
             {

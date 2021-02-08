@@ -117,6 +117,8 @@ namespace UniRx
                     }
 
                     var type = current.GetType();
+                    
+                    #pragma warning disable 0618
                     if (type == typeof(WWW))
                     {
                         var www = (WWW)current;
