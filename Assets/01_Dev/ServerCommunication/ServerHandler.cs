@@ -11,6 +11,8 @@ public class ServerHandler : MonoBehaviour
     private void Start() {
 
         InitializeServerSocket();
+        
+        // TODO : receive packets
 
     }
 
@@ -34,4 +36,6 @@ public class ServerHandler : MonoBehaviour
             Debug.Log(data);
         });
     }
+
+    
 }

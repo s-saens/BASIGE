@@ -5,25 +5,29 @@ public class GameRenderer : MonoBehaviour {
 
     // must be assigned in the inspector
     public GameObject blockPrefab;
-    public GameObject userPrefab;
+    public GameObject catPrefab;
+    public GameObject bugPrefab;
 
     private GameObject parent_blocks;
-    private GameObject parent_users;
+    public GameObject parent_cat;
+    public GameObject parent_bug;
 
     private GameObject[][] blockObjects;
-    private Dictionary<string, GameObject> users;
+    public GameObject cat;
+    private Dictionary<string, GameObject> bugs;
 
     public void Start() {
 
+        this.transform.position = new Vector3(0,0,0);
+
         parent_blocks = new GameObject("Parent_Blocks");
-        parent_blocks = new GameObject("Parent_Users");
-        userPrefab = Resources.Load("/") as GameObject;
+        parent_blocks = new GameObject("Parent_Creatures");
+        catPrefab = Resources.Load("/") as GameObject;
 
         ServerHandler.socket.On("initialize-layout", ()=> {
             Render();
         });
     }
-
 
     public void Render() {
 
@@ -41,17 +45,17 @@ public class GameRenderer : MonoBehaviour {
         
 
         //users
-        Dictionary<string, User> serverUsers = ServerData.users;
+        Dictionary<string, Creature> serverCreatures = ServerData.users;
 
-        foreach(KeyValuePair<string, User> serverUserPair in serverUsers) {
+        foreach(KeyValuePair<string, Creature> serverCreaturePair in serverCreatures) {
 
-            string serverUserID = serverUserPair.Key;
-            User serverUser = serverUserPair.Value;
+            string serverCreatureID = serverCreaturePair.Key;
+            Creature serverCreature = serverCreaturePair.Value;
 
             GameObject user;
-            user = Instantiate(userPrefab, serverUser.getPosition(), serverUser.getRotation(), parent_users.transform) as GameObject;
-            user.name = "ID : " + serverUserID;
-            users.Add(serverUserID, user);
+            user = Instantiate(catPrefab, serverCreature.GetUnityPosition(), serverCreature.GetUnityRotation(), parent_bug.transform) as GameObject;
+            user.name = "ID : " + serverCreatureID;
+            bugs.Add(serverCreatureID, user);
         }
     }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class ServerData { // Server의 GameLayout 클래스
    
     public static Block[][] blocks;
-    public static Dictionary<string, User> users;
+    public static Dictionary<string, Creature> users;
 
     private void addListener() {
         ServerHandler.socket.On("skill-result", (data) => {
@@ -13,6 +13,7 @@ public class ServerData { // Server의 GameLayout 클래스
         ServerHandler.socket.Emit("update-user","asdas");
         
     }
+
 }
 
 public class Block {
@@ -23,7 +24,7 @@ public class Block {
 
 }
 
-public class Creature {
+public class Creature: MonoBehaviour {
 
     public int x;
     public int y;
@@ -33,11 +34,11 @@ public class Creature {
     public char direction;
     public int score;
     
-    public Vector3 getUnityPosition() {
+    public Vector3 GetUnityPosition() {
         return new Vector3(this.x, 0, this.y);
     }
 
-    public Quaternion getUnityRotation() {
+    public Quaternion GetUnityRotation() {
         switch(direction) {
             case 'w' : return Quaternion.Euler(0,0,0);
             case 'a' : return Quaternion.Euler(0,90,0);
@@ -50,12 +51,8 @@ public class Creature {
 
 public class Cat : Creature {
 
-    Dictionary<string, Skill> skill;
+    public Dictionary<string, Skill> skills;
     
-    public void DoSkill() {
-
-    }
-
 }
 
 public class Bug : Creature {
