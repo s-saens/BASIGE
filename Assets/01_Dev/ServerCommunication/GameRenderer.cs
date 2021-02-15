@@ -24,6 +24,7 @@ public class GameRenderer : MonoBehaviour {
         });
     }
 
+
     public void Render() {
 
         // blocks
@@ -37,6 +38,7 @@ public class GameRenderer : MonoBehaviour {
 
             }
         }
+        
 
         //users
         Dictionary<string, User> serverUsers = ServerData.users;

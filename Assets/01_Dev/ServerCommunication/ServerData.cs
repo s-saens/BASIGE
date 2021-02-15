@@ -7,12 +7,11 @@ public class ServerData { // Server의 GameLayout 클래스
     public static Dictionary<string, User> users;
 
     private void addListener() {
-        ServerHandler.socket.On("update-block", (data) => {
+        ServerHandler.socket.On("skill-result", (data) => {
             JsonUtility.FromJson<Block>(data);
         });
-        ServerHandler.socket.On("update-user", (data) => {
-            JsonUtility.FromJson<User>(data);
-        });
+        ServerHandler.socket.Emit("update-user","asdas");
+        
     }
 }
 
@@ -21,23 +20,24 @@ public class Block {
     public string id;
     public bool isFixed;
     public bool isOwnerStand;
+
 }
 
-public class User {
+public class Creature {
 
-    private int x;
-    private int y;
+    public int x;
+    public int y;
     public string id;
     public int color;
     public int velocity;
     public char direction;
     public int score;
     
-    public Vector3 getPosition() {
+    public Vector3 getUnityPosition() {
         return new Vector3(this.x, 0, this.y);
     }
 
-    public Quaternion getRotation() {
+    public Quaternion getUnityRotation() {
         switch(direction) {
             case 'w' : return Quaternion.Euler(0,0,0);
             case 'a' : return Quaternion.Euler(0,90,0);
@@ -46,4 +46,18 @@ public class User {
             default : return Quaternion.Euler(0,0,0);
         }
     }
+}
+
+public class Cat : Creature {
+
+    Dictionary<string, Skill> skill;
+    
+    public void DoSkill() {
+
+    }
+
+}
+
+public class Bug : Creature {
+
 }
