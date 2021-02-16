@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/01_Dev/Skill.meta
+guid: 3464d793b71cdc04f9aa781448f9c40e
+=======
 guid: 3bac0b2b05f30f347a9d96cad8427cb1
+>>>>>>> 3fa9649 (hyojin):Assets/02_AssetStore/JoystickPack/SocketIO.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
