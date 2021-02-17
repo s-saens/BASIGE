@@ -1,26 +1,26 @@
 using UnityEngine;
 
-public class ClientData {
+public class MyClientData {
    
    public static string id;
    public static string nickname;
    public static UserType userType;
+   public static GameObject myObject;
 
    /* ----- Singleton Pattern ----- */
 
-   private static ClientData instance;
+   private static MyClientData instance;
 
-   public ClientData() {}
+   public MyClientData() {}
 
    private static class InnerInstanceClazz {
-      public static ClientData instance = new ClientData();
+      public static MyClientData instance = new MyClientData();
    }
-   public static ClientData getInstance() {
+   public static MyClientData getInstance() {
       return InnerInstanceClazz.instance;
    }
 
    /* ----------------------------- */
-
 
    
 }
