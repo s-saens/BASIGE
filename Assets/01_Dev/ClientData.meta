@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/01_Dev/ClientData.meta
 guid: 17afc39fcc6845f4998f490b591f376e
+=======
+guid: 9a7cae155a773474cbe5b6661636a497
+>>>>>>> movement-feature:Assets/04_TestScenes/18_HJ.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
