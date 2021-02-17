@@ -1,9 +1,10 @@
 using UnityEngine;
 using socket.io;
+using ;
+using System.Threading.Tasks;
 
 public class ServerHandler : MonoBehaviour
 {
-    // TODO : Singleton Pattern 적용하기
     
     public static Socket socket;
     private string serverURL = "http://203.254.143.190:3000";
@@ -11,8 +12,6 @@ public class ServerHandler : MonoBehaviour
     private void Start() {
 
         InitializeServerSocket();
-        
-        // TODO : receive packets
 
     }
 
@@ -33,8 +32,23 @@ public class ServerHandler : MonoBehaviour
 
 
         socket.On("test_for_client", (string data) => {
-            Debug.Log(data);
+            Debug.Log(data.);
         });
+    }
+
+    private void ServerDataFetch() {
+        
+    }
+
+    private void AddRefreshListener() {
+        socket.On("refresh", (E) => {
+            string id = E.data["id"].ToString().RemoveQuotes();
+
+        });
+    }
+
+    private void AddSkillListener() {
+
     }
 
     
