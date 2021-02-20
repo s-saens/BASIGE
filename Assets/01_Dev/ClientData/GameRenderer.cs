@@ -22,6 +22,7 @@ public class GameRenderer : MonoBehaviour {
         RenderBlocks();
         RenderCat();
         RenderBugs();
+        SendCompletePacket();
     }
 
     private void RenderBlocks() {
@@ -40,11 +41,15 @@ public class GameRenderer : MonoBehaviour {
     }
 
     private void RenderBugs() {
-        for(int i=0 ; i<ServerData.bugs.Length ; ++i) {
-            GameObject bug = Instantiate(catPrefab, ServerData.cat.GetUnityPosition(), Quaternion.Euler(0,0,0)) as GameObject;
-            bugs.Add (ServerData.bugs[i].id, bug);
+        foreach(KeyValuePair<string, Bug> bugPair in ServerData.bugs) {
+            GameObject bug = Instantiate(catPrefab, bugPair.Value.GetUnityPosition(), Quaternion.Euler(0,0,0)) as GameObject;
+            bugs.Add (bugPair.Value.id, bug);
             bug.transform.parent = parent_bug;
         }
+    }
+
+    private void SendCompletePacket() {
+        ServerHandler.socket.EmitJson("render_complete", "{ gameId:"+ ~.id + ", complete:" + bool변수.ToString() + " }");
     }
 
 }

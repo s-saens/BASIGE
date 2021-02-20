@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class ServerData { // Server의 GameLayout 클래스
-   
+
     public static Block[][] blocks;
+    public static Dictionary<string, Bug> bugs;
     public static Cat cat;
-    public static Bug[] bugs;
+
+    public static void UpdateData(Block[][] bl, Dictionary<string, Bug> b, Cat c) {
+        blocks = bl;
+        bugs = b;
+        cat = c;
+    }
 
 }
 
@@ -14,9 +20,14 @@ public class ServerData { // Server의 GameLayout 클래스
 
 public class Block {
 
-    public string id;
-    public bool isFixed;
-    public bool isOwnerStand;
+    public string owner;
+    public string[] userList;
+
+    public Block(string ownerID, string[] userList) {
+        this.owner = ownerID;
+        this.userList = userList;
+    }
+    
 
 }
 
