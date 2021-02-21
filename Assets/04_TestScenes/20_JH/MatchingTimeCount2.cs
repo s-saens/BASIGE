@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ public class MatchingTimeCount2 : MonoBehaviour
  
     /// <summary>
     /// Raises the GU event.
-    /// ½Ã°£Ç¥½Ã
+    /// ï¿½Ã°ï¿½Ç¥ï¿½ï¿½
     /// </summary>
     void OnGUI()
     {
@@ -24,4 +24,4 @@ public class MatchingTimeCount2 : MonoBehaviour
         _guiTime.text = "Time : " + timeStr;
     }
 
-}
+}*/

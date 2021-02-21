@@ -12,11 +12,11 @@ public class Test : MonoBehaviour {
    private bool isScratch;
    private bool isReturn;
 
-   void Start () {
+   private void Start() {
       anim = GetComponent<Animator>();
    }
 
-   void Update () {
+   private void Update () {
       TryScratch();
    }
 
