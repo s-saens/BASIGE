@@ -47,7 +47,7 @@ public class ServerData { // Server의 GameLayout 클래스
 
         for(int i=0 ; i<bugsCount ; ++i) {
 
-            Bug bug = new Bug(i.ToString(), i.ToString(), new Position(91974*i % 100, 71244*i % 100));
+            Bug bug = new Bug(i.ToString(), i.ToString(), new Position(i, i));
             bugs.Add(bug.id, bug);
 
         }
@@ -57,8 +57,6 @@ public class ServerData { // Server의 GameLayout 클래스
     }
 
 }
-
-
 
 public class Block {
 
