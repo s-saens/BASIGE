@@ -23,10 +23,6 @@ public class ServerHandler : MonoBehaviour
             Debug.Log("Connected successfully");
             
             socket.Emit("test", "name: 'testA'");
-
-            DataSync syncronizer = this.GetComponent<DataSync>();
-
-            syncronizer.AddAllListeners();
         });
 
     }
