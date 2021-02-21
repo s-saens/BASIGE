@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cameraWork : MonoBehaviour
+public class CameraWork : MonoBehaviour
 {
    GameObject player;
     // Start is called before the first frame update

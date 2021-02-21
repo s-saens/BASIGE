@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public FixedJoystick joystick;
-    public GameObject cube;
     // Start is called before the first frame update
     void Start()
     {

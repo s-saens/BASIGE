@@ -19,7 +19,7 @@ public class MoveManager : MonoBehaviour
     public void movePlayer(GameObject player,Direction dir){
         changeRotation(player,dir);
     }
-    public void changeRotation(GameObject player,CapsuleDirection2D dir){
+    public void changeRotation(GameObject player,Direction dir){
         int rotation=0;
         switch(dir){
             case Direction.UP: rotation=0; break;
@@ -28,7 +28,7 @@ public class MoveManager : MonoBehaviour
             case Direction.LEFT: rotation=-90; break;
         }
         Tween tween=player.transform.DORotate(new Vector3(0,rotation,0),1f);
-        tween.onComplete(()=>{
+        tween.OnComplete(()=>{
             StartCoroutine(Move(player,dir));
         });
     }

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1251,7 +1251,7 @@ GameObject:
   - component: {fileID: 900449082}
   - component: {fileID: 900449081}
   m_Layer: 0
-  m_Name: Warm
+  m_Name: Bug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2213,6 +2213,8 @@ GameObject:
   - component: {fileID: 1600640637}
   - component: {fileID: 1600640638}
   - component: {fileID: 1600640639}
+  - component: {fileID: 1600640641}
+  - component: {fileID: 1600640640}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2261,6 +2263,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dcd4e1e7ab52b2145a44e76f6df3f520, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1600640640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600640636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4ca654dcee69f94bb16228e52e2f9b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joystick: {fileID: 1410182044}
+--- !u!114 &1600640641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600640636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e85017a054bd7ce4996ef122eed0e3fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1741711975
@@ -2458,6 +2485,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1770206116}
+  - component: {fileID: 1770206117}
   m_Layer: 0
   m_Name: CameraWork
   m_TagString: Untagged
@@ -2480,6 +2508,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1770206117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770206115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29f29694684f08b49bf777ff638e1b33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1787847924
 GameObject:
   m_ObjectHideFlags: 0
@@ -2677,7 +2717,7 @@ GameObject:
   - component: {fileID: 1889145361}
   - component: {fileID: 1889145362}
   m_Layer: 0
-  m_Name: WamBase
+  m_Name: BugBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
