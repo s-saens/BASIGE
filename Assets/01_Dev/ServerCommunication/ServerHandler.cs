@@ -22,7 +22,7 @@ public class ServerHandler : MonoBehaviour
         socket.On(SystemEvents.connect, () => {
             Debug.Log("Connected successfully");
             
-            socket.Emit("test", "name: 'testA'");
+            socket.EmitJson("test", "name: 'testA'");
         });
 
     }
