@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/01_Dev/ServerCommunication/Prefabs/Bug.mat.meta
 guid: 3c237312eab5af543be6aa8f8c11efa2
 NativeFormatImporter:
+=======
+guid: 20ae840da0fd1fc4c9c6fb8e9b59578b
+folderAsset: yes
+DefaultImporter:
+>>>>>>> 5844e1940a9a3c963ea926fa4da5d22aa6730227:Assets/04_TestScenes/20_JH/Fantasy Wooden GUI  Free.meta
   externalObjects: {}
   mainObjectFileID: 0
   userData: 
