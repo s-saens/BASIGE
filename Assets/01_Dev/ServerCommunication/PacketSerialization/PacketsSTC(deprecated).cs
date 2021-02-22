@@ -9,7 +9,7 @@ public class MATCH_STATUS__STC {
 public class RENDER__STC {
    public int timer;
    public Block[][] map;
-   public Bug[] bugList;
+   public Dictionary<string, Bug> bugList;
    public Cat cat;
 }
 
