@@ -1,3 +1,5 @@
+// ATTACH THIS TO GameManager OBJECT //
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,20 +7,15 @@ using DG.Tweening;
 
 public class MoveManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    public GameObject test;
+    public void MoveRight() {
+        this.movePlayer(test, 0);
+    }
+    
+    public void movePlayer(GameObject player, int dir){
+        changeRotation(player, (Direction)dir);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public void movePlayer(GameObject player,Direction dir){
-        changeRotation(player,dir);
-    }
     public void changeRotation(GameObject player,Direction dir){
         int rotation=0;
         switch(dir){

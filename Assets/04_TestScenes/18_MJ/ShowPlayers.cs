@@ -46,29 +46,29 @@ public class ShowPlayers : MonoBehaviour
         if(refreshTime<0){
             refreshTime=0.5f;
 
-            // for(int i=0;i<30;i++){
-            //     if(Bugs[i].IsItLive==false) continue;
+            for(int i=0;i<30;i++){
+                if(Bugs[i].IsItLive==false) continue;
 
-            //     Bugs[i].xpos = 1; // =SeverData.users[i].Postion.x;
-            //     Bugs[i].ypos = 1; // =SeverData.users[i].Postion.y;
-            //     Bugs[i].Tile.transform.position = new Vector3(Bugs[i].xpos*2+1,-Bugs[i].ypos*2-1,0);
-            //     Bugs[i].IsItLive = true; // =SeverData.users[i].IsItLive;
-            // }
+                Bugs[i].xpos = 1; // =SeverData.users[i].Postion.x;
+                Bugs[i].ypos = 1; // =SeverData.users[i].Postion.y;
+                Bugs[i].Tile.transform.position = new Vector3(Bugs[i].xpos*2+1,-Bugs[i].ypos*2-1,0);
+                Bugs[i].IsItLive = true; // =SeverData.users[i].IsItLive;
+            }
 
             int temp=0;
             for(int i=0;i<100;i++){
                 for(int j=0;j<100;j++){
 
-                    // if(ServerData.blocks[j][i].isOwnerStand==true&&ServerData.blocks[j][i].id=="Bug"){
-                    //     Bugs[temp].xpos = j;
-                    //     Bugs[temp].ypos = i;
-                    //     temp++;
-                    // }
+                    if(ServerData.blocks[j][i].isOwnerStand==true&&ServerData.blocks[j][i].id=="Bug"){
+                        Bugs[temp].xpos = j;
+                        Bugs[temp].ypos = i;
+                        temp++;
+                    }
 
-                    // else if(ServerData.blocks[j][i].isOwnerStand==true&&ServerData.blocks[j][i].id=="Cat"){
-                    //     Cat.xpos = j-8;
-                    //     Cat.ypos = i-8;
-                    // }
+                    else if(ServerData.blocks[j][i].isOwnerStand==true&&ServerData.blocks[j][i].id=="Cat"){
+                        Cat.xpos = j-8;
+                        Cat.ypos = i-8;
+                    }
                 }
             }
             Cat.Tile.transform.position = new Vector3(8+Cat.xpos*2,-8-Cat.ypos*2,0);

@@ -29,6 +29,7 @@ public class GameResult : MonoBehaviour
        
     }
     public void setText(GAME_RESULT__STC winner, GAME_RESULT__STC catScore,GAME_RESULT__STC bugScore){
+        
         if(MyClientData.userType.ToString().Equals(winner)){
             this.winner.text="You Win!";
         }
