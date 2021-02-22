@@ -2,40 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-struct Players{
-    public GameObject Tile;
-    public int xpos;
-    public int ypos;
-    public bool IsItLive;
-
-}
 public class ShowPlayers : MonoBehaviour
 {
-    public float refreshTime=0;
+    private float refreshTime=0;
     public GameObject Prefab_Bug;
     public GameObject Prefab_Cat;
 
-    private Players[] Bugs = new Players[30]; 
+    private List<GameObject> Bugs; 
 
-    private Players Cat;
+    private GameObject Cat;
+
+
+    private int tempX;
+    private int tempY;
+    private int AliveBugs;
 
 
     // Start is called before the first frame update
 
-    void InitializePlayers(Players A, GameObject X){
-        A.xpos=0;
-        A.ypos=0;
-        A.IsItLive=true;
-        A.Tile = Instantiate(X,new Vector3(A.xpos,A.ypos,0),Quaternion.identity);
-    }
 
     void Start()
     {
+        
+        ServerData.InitializeDataObjects();
+        ServerData.InitializeDummies();
+        
         for(int i=0;i<30;i++){
-            InitializePlayers(Bugs[i],Prefab_Bug);
+            Bugs[i] = Instantiate(Prefab_Bug,new Vector3(0,0,0),Quaternion.identity) as GameObject;       //에러
         }
-        InitializePlayers(Cat,Prefab_Cat);
+        AliveBugs=30;
+        Cat = Instantiate(Prefab_Cat,new Vector3(0,0,0),Quaternion.identity) as GameObject;
     }
+
+
+    void Destroy_Dead_Bug(){
+        Destroy(Bugs[AliveBugs-1]);
+        AliveBugs--;
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -46,32 +50,27 @@ public class ShowPlayers : MonoBehaviour
         if(refreshTime<0){
             refreshTime=0.5f;
 
-            for(int i=0;i<30;i++){
-                if(Bugs[i].IsItLive==false) continue;
+            int i=0;
+            foreach(KeyValuePair<string, Bug> bugpair in ServerData.bugs){      //에러
+                
 
-                Bugs[i].xpos = 1; // =SeverData.users[i].Postion.x;
-                Bugs[i].ypos = 1; // =SeverData.users[i].Postion.y;
-                Bugs[i].Tile.transform.position = new Vector3(Bugs[i].xpos*2+1,-Bugs[i].ypos*2-1,0);
-                Bugs[i].IsItLive = true; // =SeverData.users[i].IsItLive;
-            }
-
-            int temp=0;
-            for(int i=0;i<100;i++){
-                for(int j=0;j<100;j++){
-
-                    if(ServerData.blocks[j][i].isOwnerStand==true&&ServerData.blocks[j][i].id=="Bug"){
-                        Bugs[temp].xpos = j;
-                        Bugs[temp].ypos = i;
-                        temp++;
-                    }
-
-                    else if(ServerData.blocks[j][i].isOwnerStand==true&&ServerData.blocks[j][i].id=="Cat"){
-                        Cat.xpos = j-8;
-                        Cat.ypos = i-8;
-                    }
+                if(bugpair.Value.isAlive==false){
+                    continue;
                 }
+
+                tempX = bugpair.Value.position.x;
+                tempY = bugpair.Value.position.y;
+                Bugs[i].transform.position = new Vector3(tempX*2+1,-tempY*2-1,0);
+                i++;
             }
-            Cat.Tile.transform.position = new Vector3(8+Cat.xpos*2,-8-Cat.ypos*2,0);
+
+            
+            
+            tempX = ServerData.cat.position.x;
+            tempY = ServerData.cat.position.y;
+            Cat.transform.position = new Vector3(tempX*2+4,-tempY*2-4,0);
+
+
         }
     }
 }

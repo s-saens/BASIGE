@@ -2,31 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-struct Point {public int x; public int y;}
 public class CreateMinimap : MonoBehaviour
 {
     public GameObject Map_prefab_Area;
     public GameObject Map_prefab_Bug;
     public GameObject Map_prefab_Cat;
     private GameObject[][] MapFrame;
-
     private float refreshTime=0;
 
 
-    private int TemporalRateOfBlock;
 
     void RenderMap(GameObject[][] Map){
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
-                Map[i][j] = Instantiate(Map_prefab_Area,new Vector2(40+80*j,-(40+80*i)),Quaternion.identity) as GameObject;
+                Map[j][i] = Instantiate(Map_prefab_Area,new Vector2(40+80*j,-(40+80*i)),Quaternion.identity) as GameObject; //¿¡·¯
             }
         }
     }
 
+    void initialize(GameObject[][] Map){
+        // block °ÔÀÓ¿ÀºêÁ§Æ® Å©±â ÁöÁ¤
+
+        Map = new GameObject[ServerData.mapSize/20][];
+
+        for(int i=0 ; i<ServerData.mapSize/20 ; ++i) {
+            Map[i] = new GameObject[ServerData.mapSize/20];
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        initialize(MapFrame);
         RenderMap(MapFrame);
     }
     
@@ -43,14 +50,18 @@ public class CreateMinimap : MonoBehaviour
             for(int h=0;h<5;h++){
                 for(int w=0;w<5;w++){
 
-                    //ï¿½ï¿½ Ä­(20*20)ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+                    //ÇÑ Ä­(20*20)¿¡ ÀÖ´Â µ¥ÀÌÅÍ¿¡¼­ ¾î´ÀÂÊÀÌ ¸¹ÀºÁö °è»ê
                     
-                     TemporalRateOfBlock=0;
-
+                    int TemporalRateOfBlock=0;
 
                     for(int j=0;j<20;j++){
                         for(int i=0;i<20;i++){
-                            //if(//ServerData.blocks[w*20+i][h*20+j].isFixed==) TemporalRateOfBlock++; else TemporalRateOfBlock--;
+                            Bug tempBug;
+                            ServerData.bugs.TryGetValue(ServerData.blocks[w*20+i][h*20+j].owner,out tempBug);   //¿¡·¯
+                            if(tempBug.userType==UserType.CAT)
+                                TemporalRateOfBlock++;
+                            else if(tempBug.userType==UserType.BUG)
+                                TemporalRateOfBlock--;
                         }
                     }
 
