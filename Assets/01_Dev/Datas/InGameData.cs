@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class InGameData : MonoBehaviour {
     
+
+    // 3D Objects
     public GameObject[][] blockObjects;
     public Dictionary<string, GameObject> bugObjectsDict;
     public GameObject catObject;
+
 
     private void Start() {
         

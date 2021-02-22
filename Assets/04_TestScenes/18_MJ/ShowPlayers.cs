@@ -8,8 +8,7 @@ public class ShowPlayers : MonoBehaviour
     public GameObject Prefab_Bug;
     public GameObject Prefab_Cat;
 
-    private List<GameObject> Bugs; 
-
+    private Dictionary<string, GameObject> Bugs;
     private GameObject Cat;
 
 
@@ -23,21 +22,31 @@ public class ShowPlayers : MonoBehaviour
 
     void Start()
     {
-        
-        ServerData.InitializeDataObjects();
+        Bugs = new Dictionary<string, GameObject>();
+
         ServerData.InitializeDummies();
         
-        for(int i=0;i<30;i++){
-            Bugs[i] = Instantiate(Prefab_Bug,new Vector3(0,0,0),Quaternion.identity) as GameObject;       //에러
+        // Bug
+        foreach(KeyValuePair<string, Bug> bugPair in ServerData.bugs) {
+            GameObject tempObject = Instantiate(Prefab_Bug, new Vector3(0,0,0),Quaternion.identity) as GameObject;
+            tempObject.transform.parent = this.transform;
+            Bugs.Add(bugPair.Value.id, tempObject);
         }
+
         AliveBugs=30;
         Cat = Instantiate(Prefab_Cat,new Vector3(0,0,0),Quaternion.identity) as GameObject;
     }
 
 
-    void Destroy_Dead_Bug(){
-        Destroy(Bugs[AliveBugs-1]);
-        AliveBugs--;
+    void Destroy_Dead_Bug(string[] dead_ids){
+
+        for(int i=0 ; i<dead_ids.Length ; ++i) {
+
+            GameObject destroyingObject;
+            Bugs.TryGetValue(dead_ids[i], out destroyingObject);
+            Destroy(destroyingObject);
+
+        }
     }
 
 
@@ -60,7 +69,10 @@ public class ShowPlayers : MonoBehaviour
 
                 tempX = bugpair.Value.position.x;
                 tempY = bugpair.Value.position.y;
-                Bugs[i].transform.position = new Vector3(tempX*2+1,-tempY*2-1,0);
+
+                GameObject tempObject;
+                Bugs.TryGetValue(bugpair.Value.id, out tempObject);
+                tempObject.transform.position = new Vector3(tempX*2+1,-tempY*2-1,0);
                 i++;
             }
 

@@ -7,34 +7,37 @@ public class CreateMinimap : MonoBehaviour
     public GameObject Map_prefab_Area;
     public GameObject Map_prefab_Bug;
     public GameObject Map_prefab_Cat;
+
     private GameObject[][] MapFrame;
     private float refreshTime=0;
 
 
 
-    void RenderMap(GameObject[][] Map){
-        for(int i=0;i<5;i++){
-            for(int j=0;j<5;j++){
-                Map[j][i] = Instantiate(Map_prefab_Area,new Vector2(40+80*j,-(40+80*i)),Quaternion.identity) as GameObject; //¿¡·¯
-            }
+
+    void initialize(){
+        ServerData.InitializeDummies();
+
+        MapFrame = new GameObject[ServerData.mapSize/20][];
+
+        for(int i=0 ; i<ServerData.mapSize/20 ; ++i) {
+            MapFrame[i] = new GameObject[ServerData.mapSize/20];
         }
     }
 
-    void initialize(GameObject[][] Map){
-        // block °ÔÀÓ¿ÀºêÁ§Æ® Å©±â ÁöÁ¤
-
-        Map = new GameObject[ServerData.mapSize/20][];
-
-        for(int i=0 ; i<ServerData.mapSize/20 ; ++i) {
-            Map[i] = new GameObject[ServerData.mapSize/20];
+    void RenderMap(){
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                MapFrame[j][i] = Instantiate(Map_prefab_Area,new Vector2(40+80*j,-(40+80*i)),Quaternion.identity) as GameObject; //ï¿½ï¿½ï¿½ï¿½
+                MapFrame[j][i].transform.parent = this.transform;
+            }
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        initialize(MapFrame);
-        RenderMap(MapFrame);
+        initialize();
+        RenderMap();
     }
     
     // Update is called once per frame
@@ -50,18 +53,20 @@ public class CreateMinimap : MonoBehaviour
             for(int h=0;h<5;h++){
                 for(int w=0;w<5;w++){
 
-                    //ÇÑ Ä­(20*20)¿¡ ÀÖ´Â µ¥ÀÌÅÍ¿¡¼­ ¾î´ÀÂÊÀÌ ¸¹ÀºÁö °è»ê
+                    //ï¿½ï¿½ Ä­(20*20)ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                     
                     int TemporalRateOfBlock=0;
 
                     for(int j=0;j<20;j++){
                         for(int i=0;i<20;i++){
                             Bug tempBug;
-                            ServerData.bugs.TryGetValue(ServerData.blocks[w*20+i][h*20+j].owner,out tempBug);   //¿¡·¯
-                            if(tempBug.userType==UserType.CAT)
-                                TemporalRateOfBlock++;
-                            else if(tempBug.userType==UserType.BUG)
-                                TemporalRateOfBlock--;
+                            if(ServerData.blocks[w*20+i][h*20+j].owner != null) {
+                                ServerData.bugs.TryGetValue(ServerData.blocks[w*20+i][h*20+j].owner, out tempBug);   //ï¿½ï¿½ï¿½ï¿½
+                                if(tempBug.userType==UserType.CAT)
+                                    TemporalRateOfBlock++;
+                                else if(tempBug.userType==UserType.BUG)
+                                    TemporalRateOfBlock--;
+                            }
                         }
                     }
 
