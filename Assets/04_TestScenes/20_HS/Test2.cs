@@ -1,12 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class Test : MonoBehaviour {
-
+public class Test2 : MonoBehaviour {
    private Animator anim;
-
    [SerializeField] private float scratch;
-
    private bool isStretch;
    private bool isScratching;
    private bool isScratch;
@@ -16,7 +13,7 @@ public class Test : MonoBehaviour {
       anim = GetComponent<Animator>();
    }
 
-   private void Update () {
+   private void Update() {
       TryScratch();
    }
 
