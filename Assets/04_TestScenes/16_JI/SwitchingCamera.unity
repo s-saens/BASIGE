@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 317507589}
   - component: {fileID: 317507588}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -413,7 +413,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Preivious
 --- !u!222 &452995541
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -606,7 +606,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Next
 --- !u!222 &857571340
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -698,7 +698,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1455687288}
-        m_MethodName: scam2
+        m_MethodName: Next
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -943,11 +943,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraSpeed: 1
-  halfHeight: 0
   cam: {fileID: 664903904}
   targetPosition: {x: 0, y: 0, z: 0}
-  cam1: {fileID: 317507587}
-  cam2: {fileID: 1882782535}
+  x: 0
+  player1: {fileID: 317507587}
+  player2: {fileID: 1882782535}
 --- !u!114 &1455687289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1068,7 +1068,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1455687288}
-        m_MethodName: scam1
+        m_MethodName: Previous
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1319,7 +1319,7 @@ GameObject:
   - component: {fileID: 1882782537}
   - component: {fileID: 1882782536}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

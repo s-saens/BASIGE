@@ -43,14 +43,14 @@ public class CreateMinimap : MonoBehaviour
             for(int h=0;h<5;h++){
                 for(int w=0;w<5;w++){
 
-                    //ÇÑ Ä­(20*20)¿¡ ÀÖ´Â µ¥ÀÌÅÍ¿¡¼­ ¾î´ÀÂÊÀÌ ¸¹ÀºÁö °è»ê
+                    //ï¿½ï¿½ Ä­(20*20)ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
                     
                      TemporalRateOfBlock=0;
 
 
                     for(int j=0;j<20;j++){
                         for(int i=0;i<20;i++){
-                            if(//ServerData.blocks[w*20+i][h*20+j].isFixed==) TemporalRateOfBlock++; else TemporalRateOfBlock--;
+                            //if(//ServerData.blocks[w*20+i][h*20+j].isFixed==) TemporalRateOfBlock++; else TemporalRateOfBlock--;
                         }
                     }
 
