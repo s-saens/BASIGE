@@ -1,27 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+// using System.Collections;
+// using System.Collections.Generic;
+// using UnityEngine;
 
-public class MatchingTimeCount2 : MonoBehaviour
-{
-    public GUIText _guiTime;
-// Update is called once per frame
-    void Update ()
-    {
-        _timeCnt += Time.deltaTime;
-    }
+// public class MatchingTimeCount2 : MonoBehaviour
+// {
+//     public GUIText _guiTime;
+// // Update is called once per frame
+//     void Update ()
+//     {
+//         _timeCnt += Time.deltaTime;
+//     }
  
  
-    /// <summary>
-    /// Raises the GU event.
-    /// ½Ã°£Ç¥½Ã
-    /// </summary>
-    void OnGUI()
-    {
-        string timeStr;
-        timeStr = "" + _timeCnt.ToString("00.00");
-        timeStr = timeStr.Replace(".",":");
-        _guiTime.text = "Time : " + timeStr;
-    }
+//     /// <summary>
+//     /// Raises the GU event.
+//     /// ï¿½Ã°ï¿½Ç¥ï¿½ï¿½
+//     /// </summary>
+//     void OnGUI()
+//     {
+//         string timeStr;
+//         timeStr = "" + _timeCnt.ToString("00.00");
+//         timeStr = timeStr.Replace(".",":");
+//         _guiTime.text = "Time : " + timeStr;
+//     }
 
-}
+// }
