@@ -1,4 +1,4 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,24 +7,32 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public InputField inputName;
-
+    public GameObject EnterTheNameIMG;
+    
     public void Save()
     {
-        PlayerPrefs.SetString("Name", inputName.text);
+        PlayerPrefs.SetString("Name", inputName.text);  //À¯Àú ÀÌ¸§¹Ş¾Æ ÀúÀå
     }
 
-    public void Start()
+    public void GameStart()
     {
-        if(PlayerPrefs.HasKey("Name")) 
+        if(inputName.text=="") 
         {   
-            //... ì„œë²„ë¡œ ì´ë¦„ë³´ë‚¼ ì½”ë“œ
-            SceneManager.LoadScene("MatchingScreenUI");     //ë§¤ì¹­í™”ë©´ìœ¼ë¡œ ì „í™˜
+            EnterTheNameIMG.gameObject.SetActive(true);  //ÀÌ¸§ÀÌ °ø¹éÀÎÁö È®ÀÎ
+        }
+        else
+        {
+            string nickname = PlayerPrefs.GetString("Name");
+            ServerHandler.socket.EmitJson("init", "{ nickname:" + nickname + " }");      //À¯Àú ÀÌ¸§ ¼­¹ö·Î Àü¼Û
+            SceneManager.LoadScene("MatchingScreenUI");     //¸ÅÄªÈ­¸éÀ¸·Î ÀüÈ¯
         }
     }
 
     public void cancel()
     {
-        SceneManager.LoadScene("MainScreenUI");
+        SceneManager.LoadScene("MainScreenUI");    //¸ÅÀÎÈ­¸éÀ¸·Î ÀüÈ¯
         PlayerPrefs.DeleteAll();
+        Debug.Log(PlayerPrefs.HasKey("Name"));  //´Ğ³×ÀÓ Áö¿öÁ³³ª È®ÀÎ
     }
+
 }
