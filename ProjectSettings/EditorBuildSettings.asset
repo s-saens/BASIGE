@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/04_TestScenes/20_JH/MainScreenUI.unity
-    guid: 98b3fbc68bb37e045b6ef1c6eb692800
+    path: Assets/03_MainScenes/0_Main.unity
+    guid: 917d97a08d6812e4cb3016b60b8509bf
   - enabled: 1
-    path: Assets/04_TestScenes/20_JH/MatchingScreenUI.unity
-    guid: a5b9885179aae0148be138d9431b636d
+    path: Assets/03_MainScenes/1_Matching.unity
+    guid: ab2ebcc3bf0c38f46a4a32ab002b1d06
+  - enabled: 1
+    path: Assets/03_MainScenes/2_Game.unity
+    guid: b687bc2b513664e4297b3684a4c2f152
   m_configObjects: {}

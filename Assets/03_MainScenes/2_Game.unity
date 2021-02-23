@@ -549,10 +549,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1182468014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcd4e1e7ab52b2145a44e76f6df3f520, type: 3}
+  m_Script: {fileID: 11500000, guid: 10b2bfd0d71ba5e46b7700cdfa9d0d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverURL: http://203.254.143.190:3000
 --- !u!114 &1182468016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,7 +621,6 @@ MonoBehaviour:
   parent_blocks: {fileID: 622679067}
   parent_bug: {fileID: 998755910}
   parent_cat: {fileID: 766801858}
-  inGameData: {fileID: 0}
 --- !u!114 &1182468021
 MonoBehaviour:
   m_ObjectHideFlags: 0

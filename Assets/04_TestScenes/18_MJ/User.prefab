@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 524042049269330537}
   - component: {fileID: 2001926383557997150}
   m_Layer: 5
-  m_Name: Bug
+  m_Name: User
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.18177521, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.018271448, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:

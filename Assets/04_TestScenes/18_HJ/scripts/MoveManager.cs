@@ -7,10 +7,6 @@ using DG.Tweening;
 
 public class MoveManager : MonoBehaviour
 {
-    public GameObject test;
-    public void MoveRight() {
-        this.movePlayer(test, 0);
-    }
     
     public void movePlayer(GameObject player, int dir){
         changeRotation(player, (Direction)dir);
