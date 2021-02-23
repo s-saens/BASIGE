@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -74,4 +74,4 @@ public class ShowPlayers : MonoBehaviour
             Cat.Tile.transform.position = new Vector3(8+Cat.xpos*2,-8-Cat.ypos*2,0);
         }
     }
-}
+}*/

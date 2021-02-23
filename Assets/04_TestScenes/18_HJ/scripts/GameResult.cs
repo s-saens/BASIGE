@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,4 +38,4 @@ public class GameResult : MonoBehaviour
         }
         this.result.text="Cat : "+catScore+" 점    Bug : "+bugScore+(" 점");
     }
-}
+}*/
