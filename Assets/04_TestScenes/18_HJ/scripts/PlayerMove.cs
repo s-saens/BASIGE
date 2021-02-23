@@ -24,7 +24,7 @@ public class PlayerMove : MonoBehaviour
             if(dirx<-deadZone&&dirz<-deadZone) dir=Direction.DOWN;
             if(dirx<-deadZone&&dirz>deadZone) dir=Direction.LEFT;
             if(dirx>deadZone&&dirz<-deadZone) dir=Direction.RIGHT;
-            ServerHandler.socket.EmitJson("move","gameId : "+MyClientData.id+", direction : "+dir.ToString()+"}");
+            ServerData.socket.EmitJson("move","gameId : "+MyClientData.id+", direction : "+dir.ToString()+"}");
         }
 
     }
