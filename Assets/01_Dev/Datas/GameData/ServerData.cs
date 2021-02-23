@@ -1,12 +1,21 @@
 using UnityEngine;
+using socket.io;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-public class ServerData { // Server의 GameLayout 클래스
+public class ServerData { // 한 게임의 Server의 GameLayout 클래스
+
+    public static Socket socket;
+
+    public static string gameId;
+    public static int timer;
 
     public static Block[][] blocks;
     public static Dictionary<string, Bug> bugs;
     public static Cat cat;
+
     public static int mapSize = 100;
 
     public static void InitializeDataObjects() {
@@ -21,41 +30,6 @@ public class ServerData { // Server의 GameLayout 클래스
         // bugs : Dictionary 객체 생성
         bugs = new Dictionary<string, Bug>();
     }
-
-    public static void UpdateData(Block[][] bl, Dictionary<string, Bug> b, Cat c) {
-        blocks = bl;
-        bugs = b;
-        cat = c;
-    }
-
-    public static void InitializeDummies() {
-        
-        InitializeDataObjects();
-
-        // 
-
-        for(int y=0 ; y<mapSize ; ++y) {
-            for(int x=0 ; x<mapSize ; ++x) {
-
-                blocks[y][x] = new Block(null, null);
-
-            }
-        }
-
-        // bugs
-        int bugsCount = 30;
-
-        for(int i=0 ; i<bugsCount ; ++i) {
-
-            Bug bug = new Bug(i.ToString(), i.ToString(), new Position(i, i));
-            bugs.Add(bug.id, bug);
-
-        }
-
-        // cat
-        cat = new Cat("sksmswhsskrhdiddlek", "nyang", new Position(12, 12));
-    }
-
 }
 
 public class Block {
@@ -73,7 +47,7 @@ public class Block {
 
 public class User {
 
-    public UserType userType;
+    public UserType type;
 
     public string id;
     public string nickname;
@@ -84,8 +58,10 @@ public class User {
 
     public int velocity;
     public int score;
-    public int color;
+    public string color;
     public bool isAlive;
+
+    public UserState userState;
     
     public Vector3 GetUnityPosition() {
         Vector2 convertedXZ;
@@ -106,7 +82,7 @@ public class User {
 public class Cat : User {
 
     public Dictionary<string, Skill> skills;
-    
+    public Cat() {}
     public Cat(string idSet, string nicknameSet, Position posSet) {
         
         id = idSet;
@@ -118,7 +94,7 @@ public class Cat : User {
 
         velocity = 1;
         score = 0;
-        color = 0;
+        color = "";
         isAlive = true;
 
     }
@@ -126,7 +102,7 @@ public class Cat : User {
 }
 
 public class Bug : User {
-
+    public Bug() {}
     public Bug(string idSet, string nicknameSet, Position posSet) {
         id = idSet;
         nickname = nicknameSet;
@@ -137,7 +113,7 @@ public class Bug : User {
 
         velocity = 1;
         score = 0;
-        color = 0;
+        color = "";
         isAlive = true;
 
     }

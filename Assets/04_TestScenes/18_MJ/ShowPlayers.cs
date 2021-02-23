@@ -23,9 +23,6 @@ public class ShowPlayers : MonoBehaviour
     void Start()
     {
         Bugs = new Dictionary<string, GameObject>();
-
-        ServerData.InitializeDummies();
-        
         // Bug
         foreach(KeyValuePair<string, Bug> bugPair in ServerData.bugs) {
             GameObject tempObject = Instantiate(Prefab_Bug, this.transform, false) as GameObject;

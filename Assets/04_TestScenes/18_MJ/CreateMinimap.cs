@@ -14,8 +14,7 @@ public class CreateMinimap : MonoBehaviour
 
 
     void initialize(){
-        ServerData.InitializeDummies();
-
+        
         MapFrame = new GameObject[ServerData.mapSize/20][];
 
         for(int i=0 ; i<ServerData.mapSize/20 ; ++i) {
@@ -51,7 +50,7 @@ public class CreateMinimap : MonoBehaviour
             for(int h=0;h<5;h++){
                 for(int w=0;w<5;w++){
 
-                    //�� ĭ(20*20)�� �ִ� �����Ϳ��� �������? ������ ���?
+                    //�� ĭ(20*20)�� �ִ� �����Ϳ��� �������? ������ ���?
                     
                     int TemporalRateOfBlock=0;
 
@@ -60,9 +59,9 @@ public class CreateMinimap : MonoBehaviour
                             Bug tempBug;
                             if(ServerData.blocks[w*20+i][h*20+j].owner != null) {
                                 ServerData.bugs.TryGetValue(ServerData.blocks[w*20+i][h*20+j].owner, out tempBug);   //����
-                                if(tempBug.userType==UserType.CAT)
+                                if(tempBug.type==UserType.CAT)
                                     TemporalRateOfBlock++;
-                                else if(tempBug.userType==UserType.BUG)
+                                else if(tempBug.type==UserType.BUG)
                                     TemporalRateOfBlock--;
                             }
                         }
