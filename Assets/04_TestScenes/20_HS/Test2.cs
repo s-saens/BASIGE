@@ -10,7 +10,7 @@ public class Test2 : MonoBehaviour {
 
   void Update () {
         if (Input.GetKeyDown(KeyCode.Space)) {
-        GetComponent<Animation>().Play("Scratch");
+        Animation.Play("Scratch");
          }
   }
 }
