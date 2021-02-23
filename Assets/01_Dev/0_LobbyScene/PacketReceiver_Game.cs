@@ -5,9 +5,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
 
-public class Event_MainScene : MonoBehaviour {
+public class PacketReceiver_Game : MonoBehaviour {
 
-    Queue<IEnumerator> eventQueue = new Queue<IEnumerator>();
 
     private void Start() {
         Add_MatchStatus();
@@ -27,7 +26,8 @@ public class Event_MainScene : MonoBehaviour {
             int count = jObject["count"].ToObject<int>();
             int maxCount = jObject["maxCount"].ToObject<int>();
 
-            this.GetComponent<MainSceneManager>().setUserCount(count, maxCount);
+            this.GetComponent<LobbySceneManager>().setUserCount(count, maxCount);
+            
             if(count == maxCount) {
                 SceneManager.LoadScene(2);
             }

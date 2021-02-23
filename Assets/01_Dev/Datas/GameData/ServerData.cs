@@ -41,7 +41,6 @@ public class Block {
         this.owner = ownerID;
         this.userList = userList;
     }
-    
 
 }
 

@@ -4,12 +4,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class MoveManager : MonoBehaviour
 {
     
-    public void movePlayer(GameObject player, int dir){
-        changeRotation(player, (Direction)dir);
+    // Joystick Move Packet Send
+    public FixedJoystick joystick;
+    
+    void Update()
+    {
+        float dirx=joystick.Horizontal;
+        float dirz=joystick.Vertical;
+        Vector3 direction=new Vector3(joystick.Horizontal,0,joystick.Vertical);
+
+        if(direction!=Vector3.zero){
+
+            Direction dir =0;
+            float deadZone=0.1f;
+            if(dirx>deadZone&&dirz>deadZone) dir=Direction.UP;
+            if(dirx<-deadZone&&dirz<-deadZone) dir=Direction.DOWN;
+            if(dirx<-deadZone&&dirz>deadZone) dir=Direction.LEFT;
+            if(dirx>deadZone&&dirz<-deadZone) dir=Direction.RIGHT;
+
+            JObject json = new JObject();
+            json.Add("gameId", MyClientData.id);
+            json.Add("direction", (int)dir);
+            ServerData.socket.EmitJson("move", json.ToString(Formatting.None));
+        }
+    }
+
+
+
+    public void movePlayer(GameObject player, Direction dir){
+        changeRotation(player, dir);
     }
 
     public void changeRotation(GameObject player,Direction dir){
@@ -25,6 +54,7 @@ public class MoveManager : MonoBehaviour
             StartCoroutine(Move(player,dir));
         });
     }
+
     public IEnumerator Move(GameObject player,Direction dir){
         Vector3 dest=player.transform.position+player.transform.forward;
         float dist=Vector3.Distance(player.transform.position,dest);

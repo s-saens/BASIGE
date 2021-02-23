@@ -18,7 +18,7 @@ public class GameRenderer : MonoBehaviour {
     public Transform parent_cat;
 
     public void Render() {
-    
+
         RenderBlocks();
         RenderCat();
         RenderBugs();

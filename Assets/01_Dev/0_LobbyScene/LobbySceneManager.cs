@@ -6,21 +6,23 @@ using UnityEngine.SceneManagement;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class MainSceneManager : MonoBehaviour
+public class LobbySceneManager : MonoBehaviour
 {
     public InputField inputName;
     public GameObject EnterTheNameIMG;
     public Text userCount;
     
     // Input Scene to Matching Scene
+    
     public void GameStart()
     {
         if(inputName.text == "") 
         {   
-            EnterTheNameIMG.gameObject.SetActive(true);  //�̸��� �������� Ȯ��
+            EnterTheNameIMG.gameObject.SetActive(true);
         }
         else
         {
+
             string nickname = inputName.text;
             inputName.text = "";
             JObject idJSON = new JObject();
@@ -28,8 +30,8 @@ public class MainSceneManager : MonoBehaviour
             Debug.Log(idJSON.ToString());
             
             ServerData.socket.EmitJson("init", idJSON.ToString(Formatting.None));
-                  //���� �̸� ������ ����
-            SceneManager.LoadScene(1);     //��Īȭ������ ��ȯ
+            SceneManager.LoadScene(1);
+
         }
     }
 
@@ -42,10 +44,12 @@ public class MainSceneManager : MonoBehaviour
     }
 
     public void setUserCount(int count, int maxCount) {
+
         userCount.text = "";
         userCount.text += count;
         userCount.text += " / ";
         userCount.text += maxCount;
+
     }
 
 

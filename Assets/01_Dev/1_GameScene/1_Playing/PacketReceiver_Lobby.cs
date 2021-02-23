@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
 
-public class Event_GameScene : MonoBehaviour {
+public class PacketReceiver_Lobby : MonoBehaviour {
 
     Queue<IEnumerator> eventQueue = new Queue<IEnumerator>();
 
@@ -105,7 +105,7 @@ public class Event_GameScene : MonoBehaviour {
                 InGameData.bugObjectsDict.TryGetValue(id, out movingObject);
 
                 MoveManager moveManager = this.GetComponent<MoveManager>();
-                moveManager.movePlayer(movingObject, (int)dir);
+                moveManager.movePlayer(movingObject, dir);
             }
 
         });
