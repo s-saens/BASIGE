@@ -22,9 +22,3 @@ public enum SkillResult {
     SUCCESS,
     NO_COOL
 }
-
-public enum UserState {
-    READY,
-    PLAYING,
-    DEAD
-}
