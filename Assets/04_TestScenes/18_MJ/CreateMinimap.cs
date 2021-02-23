@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CreateMinimap : MonoBehaviour
 {
     public GameObject Map_prefab_Area;
-    public GameObject Map_prefab_Bug;
-    public GameObject Map_prefab_Cat;
 
     private GameObject[][] MapFrame;
     private float refreshTime=0;
@@ -28,7 +27,7 @@ public class CreateMinimap : MonoBehaviour
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
                 MapFrame[j][i] = Instantiate(Map_prefab_Area,new Vector2(40+80*j,-(40+80*i)),Quaternion.identity) as GameObject; //����
-                MapFrame[j][i].transform.parent = this.transform;
+                MapFrame[j][i].transform.SetParent(this.transform,false);
             }
         }
     }
@@ -49,11 +48,10 @@ public class CreateMinimap : MonoBehaviour
         if(refreshTime<0){
             refreshTime=0.5f;
 
-
             for(int h=0;h<5;h++){
                 for(int w=0;w<5;w++){
 
-                    //�� ĭ(20*20)�� �ִ� �����Ϳ��� ������� ������ ���
+                    //�� ĭ(20*20)�� �ִ� �����Ϳ��� �������? ������ ���?
                     
                     int TemporalRateOfBlock=0;
 
@@ -72,13 +70,13 @@ public class CreateMinimap : MonoBehaviour
 
 
                     if(TemporalRateOfBlock>0){
-                        MapFrame[w][h]=Instantiate(Map_prefab_Cat);
+                        MapFrame[w][h].GetComponent<RawImage>().color = new Color(255,78,0,255);
                     }
                     else if(TemporalRateOfBlock<0){
-                        MapFrame[w][h]=Instantiate(Map_prefab_Bug);
+                        MapFrame[w][h].GetComponent<RawImage>().color = new Color(129,255,105,255);
                     }
                     else{
-                        MapFrame[w][h]=Instantiate(Map_prefab_Area);
+                        MapFrame[w][h].GetComponent<RawImage>().color = new Color(120,120,120,255);
                     }
 
 

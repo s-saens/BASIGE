@@ -28,13 +28,14 @@ public class ShowPlayers : MonoBehaviour
         
         // Bug
         foreach(KeyValuePair<string, Bug> bugPair in ServerData.bugs) {
-            GameObject tempObject = Instantiate(Prefab_Bug, new Vector3(0,0,0),Quaternion.identity) as GameObject;
-            tempObject.transform.parent = this.transform;
+            GameObject tempObject = Instantiate(Prefab_Bug, this.transform, false) as GameObject;
             Bugs.Add(bugPair.Value.id, tempObject);
+            tempObject.transform.SetParent(this.transform,false);
         }
 
         AliveBugs=30;
-        Cat = Instantiate(Prefab_Cat,new Vector3(0,0,0),Quaternion.identity) as GameObject;
+        Cat = Instantiate(Prefab_Cat,this.transform,false) as GameObject;
+        Cat.transform.SetParent(this.transform,false);
     }
 
 
@@ -72,7 +73,7 @@ public class ShowPlayers : MonoBehaviour
 
                 GameObject tempObject;
                 Bugs.TryGetValue(bugpair.Value.id, out tempObject);
-                tempObject.transform.position = new Vector3(tempX*2+1,-tempY*2-1,0);
+                tempObject.transform.localPosition = new Vector3(tempX*4+2,-tempY*4-2,0);
                 i++;
             }
 
@@ -80,7 +81,7 @@ public class ShowPlayers : MonoBehaviour
             
             tempX = ServerData.cat.position.x;
             tempY = ServerData.cat.position.y;
-            Cat.transform.position = new Vector3(tempX*2+4,-tempY*2-4,0);
+            Cat.transform.localPosition = new Vector3(tempX*4+8,-tempY*4-8,0);
 
 
         }

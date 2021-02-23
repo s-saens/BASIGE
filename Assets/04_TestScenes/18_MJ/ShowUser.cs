@@ -14,8 +14,9 @@ public class ShowUser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UserPoint = Instantiate(Prefab_User,new Vector3(0,0,0),Quaternion.identity) as GameObject;
-        if(MyClientData.userType == UserType.CAT) UserPoint.transform.localScale = new Vector3(16,16,0);
+        UserPoint = Instantiate(Prefab_User,this.transform,false) as GameObject;
+        if(MyClientData.userType == UserType.CAT) UserPoint.transform.localScale = new Vector3(4,4,0);
+        UserPoint.transform.SetParent(this.transform,false);
     }
     
     // Update is called once per frame
@@ -32,13 +33,13 @@ public class ShowUser : MonoBehaviour
                 ServerData.bugs.TryGetValue(MyClientData.id,out tempBug);
                 tempX=tempBug.position.x;
                 tempY=tempBug.position.y;
-                UserPoint.transform.position = new Vector3 (tempX,tempY,0);
+                UserPoint.transform.localPosition = new Vector3 (tempX*4+2,-tempY*4-2,0);
             }
             
             else{
                 tempX=ServerData.cat.position.x;
                 tempY=ServerData.cat.position.y;
-                UserPoint.transform.position = new Vector3 (tempX,tempY,0);
+                UserPoint.transform.localPosition = new Vector3 (tempX*4+8,-tempY*4-8,0);
             }
             
         }//if
