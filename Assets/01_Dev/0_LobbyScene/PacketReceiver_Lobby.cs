@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
 
-public class PacketReceiver_Game : MonoBehaviour {
+public class PacketReceiver_Lobby : MonoBehaviour {
 
 
     private void Start() {

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
 
-public class PacketReceiver_Lobby : MonoBehaviour {
+public class PacketReceiver_Game : MonoBehaviour {
 
     Queue<IEnumerator> eventQueue = new Queue<IEnumerator>();
 
@@ -40,10 +40,16 @@ public class PacketReceiver_Lobby : MonoBehaviour {
             ServerData.gameId = jObject["gameId"].ToObject<string>();
             ServerData.timer = jObject["timer"].ToObject<int>();
             ServerData.blocks = jObject["map"].ToObject<Block[][]>();
+            MyClientData.id=jObject["socketId"].ToObject<string>();
 
             Dictionary<string, JObject> usersList = jObject["userList"].ToObject<Dictionary<string, JObject>>();
             foreach(KeyValuePair<string, JObject> userPair in usersList) {
                 Debug.Log(userPair.Value.ToString());
+                string tempid=userPair.Value["id"].ToObject<string>();
+                if(MyClientData.id.Equals(tempid)){
+                    MyClientData.nickname=userPair.Value["nickname"].ToObject<string>();
+                    MyClientData.userType=userPair.Value["type"].ToObject<UserType>();
+                }
                 switch(userPair.Value["type"].ToObject<UserType>()) {
                     case UserType.CAT :
                         ServerData.cat = userPair.Value.ToObject<Cat>(); // cat 할당
@@ -56,7 +62,7 @@ public class PacketReceiver_Lobby : MonoBehaviour {
             }
 
             // 렌더링하기
-
+            Debug.Log(MyClientData.id);
             GameRenderer gameRenderer = this.GetComponent<GameRenderer>();
             gameRenderer.Render();
 

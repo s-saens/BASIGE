@@ -5,25 +5,28 @@ using UnityEngine;
 public class CameraWork : MonoBehaviour
 {
    GameObject player;
+   public Transform camerapivot;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
-        player=GameObject.Find(MyClientData.id);
-        Camera camera;
-        camera=this.transform.GetChild(0).GetComponent<Camera>();
         if(MyClientData.userType==UserType.CAT){
-            camera.orthographicSize=10;
+            Debug.Log(MyClientData.userType);
+            camerapivot.GetChild(0).GetComponent<Camera>().orthographicSize=10;
+            player=InGameData.catObject;
+            Debug.Log(player);
         }
         if(MyClientData.userType==UserType.BUG){
-            camera.orthographicSize=5;
+            Debug.Log(MyClientData.userType);
+            camerapivot.GetChild(0).GetComponent<Camera>().orthographicSize=5;
+            InGameData.bugObjectsDict.TryGetValue(MyClientData.id,out player);
+             Debug.Log(player);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 pre=this.transform.position;
-        Vector3 des=new Vector3(player.transform.position.x+13,player.transform.position.y+8,player.transform.position.z-13);
-        this.transform.position=Vector3.Lerp(pre,des,Time.deltaTime);
+        Vector3 pre=camerapivot.position;
+        camerapivot.position=Vector3.Lerp(pre, player.transform.position,Time.deltaTime);
     }
 }

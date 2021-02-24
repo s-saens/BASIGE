@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 736744185}
   - component: {fileID: 736744183}
   - component: {fileID: 736744184}
+  - component: {fileID: 736744189}
+  - component: {fileID: 736744188}
   m_Layer: 0
   m_Name: 04_GameManager
   m_TagString: Untagged
@@ -216,6 +218,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &736744188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736744182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c85cad0e34d3b147adb3370e478661e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputName: {fileID: 0}
+  EnterTheNameIMG: {fileID: 0}
+  userCount: {fileID: 1999267996}
+--- !u!114 &736744189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736744182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa412a3a0f38c9b4eafd8dde2a647faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &786238647
 GameObject:
   m_ObjectHideFlags: 0
