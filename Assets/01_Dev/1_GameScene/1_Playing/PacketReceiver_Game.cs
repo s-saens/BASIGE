@@ -60,13 +60,13 @@ public class PacketReceiver_Game : MonoBehaviour {
                         break;
                 }
             }
-
-            // 렌더링하기
+        });
+        // 렌더링하기
             Debug.Log(MyClientData.id);
             GameRenderer gameRenderer = this.GetComponent<GameRenderer>();
             gameRenderer.Render();
 
-        });
+            this.GetComponent<CameraWork>().setCamera();
 
     }
 

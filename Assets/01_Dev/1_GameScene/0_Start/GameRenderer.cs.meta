@@ -10,12 +10,9 @@ MonoImporter:
       type: 3}
   - catPrefab: {fileID: 1357795561751884808, guid: 19f82a92f06dc824e831319da3336f7c,
       type: 3}
-  - parent_blocks: {fileID: 3820907684111319268, guid: e6e8260b39596424aa81ae1fd8d301a9,
-      type: 3}
-  - parent_bug: {fileID: 7919277313656660858, guid: 67ff9f1a05fa31447b3867223d8e33d5,
-      type: 3}
-  - parent_cat: {fileID: 7531353752946069921, guid: 19f82a92f06dc824e831319da3336f7c,
-      type: 3}
+  - parent_blocks: {instanceID: 0}
+  - parent_bug: {instanceID: 0}
+  - parent_cat: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

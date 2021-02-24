@@ -26,7 +26,7 @@ public class ServerData { // 한 게임의 Server의 GameLayout 클래스
         for(int i=0 ; i<mapSize ; ++i) {
             blocks[i] = new Block[mapSize];
         }
-
+        cat=new Cat();
         // bugs : Dictionary 객체 생성
         bugs = new Dictionary<string, Bug>();
     }

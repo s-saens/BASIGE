@@ -6,8 +6,10 @@ public class CameraWork : MonoBehaviour
 {
    GameObject player;
    public Transform camerapivot;
+   bool isActive=false;
+
     // Start is called before the first frame update
-    public void Start()
+    public void setCamera()
     {
         if(MyClientData.userType==UserType.CAT){
             Debug.Log(MyClientData.userType);
@@ -19,13 +21,15 @@ public class CameraWork : MonoBehaviour
             Debug.Log(MyClientData.userType);
             camerapivot.GetChild(0).GetComponent<Camera>().orthographicSize=5;
             InGameData.bugObjectsDict.TryGetValue(MyClientData.id,out player);
-             Debug.Log(player);
+            Debug.Log(player);
         }
+        isActive=true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!isActive) return;
         Vector3 pre=camerapivot.position;
         camerapivot.position=Vector3.Lerp(pre, player.transform.position,Time.deltaTime);
     }
