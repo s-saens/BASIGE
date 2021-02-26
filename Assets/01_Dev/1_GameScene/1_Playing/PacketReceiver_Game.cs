@@ -109,6 +109,7 @@ public class PacketReceiver_Game : MonoBehaviour {
                 Position pos = animationPair.Value["position"].ToObject<Position>();
                 Debug.Log(dir);
                 GameObject movingObject=new GameObject();
+                if(MyClientData.userType==UserType.CAT){
                     movingObject=InGameData.catObject;
                 }
                 if(MyClientData.userType==UserType.BUG){
