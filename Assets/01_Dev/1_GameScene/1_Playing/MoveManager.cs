@@ -12,7 +12,7 @@ public class MoveManager : MonoBehaviour
     
     // Joystick Move Packet Send
     public FixedJoystick joystick;
-    
+    Direction tempdir=0;
     void Update()
     {
         float dirx=joystick.Horizontal;
@@ -22,14 +22,14 @@ public class MoveManager : MonoBehaviour
         if(direction!=Vector3.zero){
 
             Direction dir =0;
-            float deadZone=0.1f;
+            float deadZone=0.2f;
             if(dirx>deadZone&&dirz>deadZone) dir=Direction.UP;
             if(dirx<-deadZone&&dirz<-deadZone) dir=Direction.DOWN;
             if(dirx<-deadZone&&dirz>deadZone) dir=Direction.LEFT;
             if(dirx>deadZone&&dirz<-deadZone) dir=Direction.RIGHT;
 
             JObject json = new JObject();
-            json.Add("gameId", MyClientData.id);
+            json.Add("gameId", ServerData.gameId);
             json.Add("direction", (int)dir);
             ServerData.socket.EmitJson("move", json.ToString(Formatting.None));
         }
@@ -43,12 +43,14 @@ public class MoveManager : MonoBehaviour
 
     public void changeRotation(GameObject player,Direction dir){
         int rotation=0;
+
         switch(dir){
             case Direction.UP: rotation=0; break;
             case Direction.DOWN: rotation=180; break;
             case Direction.RIGHT: rotation=90; break;
             case Direction.LEFT: rotation=-90; break;
         }
+        tempdir=dir;
         Tween tween=player.transform.DORotate(new Vector3(0,rotation,0),1f);
         tween.OnComplete(()=>{
             StartCoroutine(Move(player,dir));

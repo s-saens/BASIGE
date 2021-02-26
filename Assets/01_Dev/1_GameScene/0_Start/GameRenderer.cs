@@ -12,6 +12,7 @@ public class GameRenderer : MonoBehaviour {
     public GameObject blockPrefab;
     public GameObject bugPrefab;
     public GameObject catPrefab;
+    public GameObject wallObject;
 
     public Transform parent_blocks;
     public Transform parent_bug;
@@ -35,6 +36,7 @@ public class GameRenderer : MonoBehaviour {
                 InGameData.blockObjects[y][x].transform.parent = parent_blocks;
             }
         }
+        wallObject.SetActive(true);
     }
 
     private void RenderCat() {

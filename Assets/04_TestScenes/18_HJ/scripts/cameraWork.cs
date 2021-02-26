@@ -13,7 +13,7 @@ public class CameraWork : MonoBehaviour
     {
         if(MyClientData.userType==UserType.CAT){
             Debug.Log(MyClientData.userType);
-            camerapivot.GetChild(0).GetComponent<Camera>().orthographicSize=10;
+            camerapivot.GetChild(0).GetComponent<Camera>().orthographicSize=15;
             player=InGameData.catObject;
             Debug.Log(player);
         }
@@ -31,6 +31,6 @@ public class CameraWork : MonoBehaviour
     {
         if(!isActive) return;
         Vector3 pre=camerapivot.position;
-        camerapivot.position=Vector3.Lerp(pre, player.transform.position,Time.deltaTime);
+        camerapivot.position=Vector3.Lerp(pre, player.transform.position,3*Time.deltaTime);
     }
 }

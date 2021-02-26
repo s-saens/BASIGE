@@ -60,13 +60,14 @@ public class PacketReceiver_Game : MonoBehaviour {
                         break;
                 }
             }
-        });
-        // 렌더링하기
+            // 렌더링하기
+            Debug.Log(ServerData.gameId);
             Debug.Log(MyClientData.id);
             GameRenderer gameRenderer = this.GetComponent<GameRenderer>();
             gameRenderer.Render();
 
             this.GetComponent<CameraWork>().setCamera();
+        });
 
     }
 
@@ -92,7 +93,7 @@ public class PacketReceiver_Game : MonoBehaviour {
             // TODO Move 코루틴 호출
             // TODO ServerData 갱신
             // TODO timer, minimap, score 등 UI 갱신
-
+            Debug.Log("글쿠만");
             jObject = JObject.Parse(data);
 
             // ServerData 조지기
@@ -106,9 +107,13 @@ public class PacketReceiver_Game : MonoBehaviour {
                 string id = animationPair.Key;
                 Direction dir = animationPair.Value["direction"].ToObject<Direction>();
                 Position pos = animationPair.Value["position"].ToObject<Position>();
-
-                GameObject movingObject;
-                InGameData.bugObjectsDict.TryGetValue(id, out movingObject);
+                Debug.Log(dir);
+                GameObject movingObject=new GameObject();
+                    movingObject=InGameData.catObject;
+                }
+                if(MyClientData.userType==UserType.BUG){
+                    InGameData.bugObjectsDict.TryGetValue(id, out movingObject);
+                }
 
                 MoveManager moveManager = this.GetComponent<MoveManager>();
                 moveManager.movePlayer(movingObject, dir);
@@ -149,7 +154,13 @@ public class PacketReceiver_Game : MonoBehaviour {
 
             Debug.Log(data);
             jObject = JObject.Parse(data);
+            string winner=jObject["winner"].ToObject<string>();
+            int catScore=jObject["catScore"].ToObject<int>();
+            int bugScore=jObject["bugScore"].ToObject<int>();
             // TODO GameResult 창 띄우기
+            SceneManager.LoadScene(2);
+            GameResult gameResult=this.GetComponent<GameResult>();
+            gameResult.setText(winner,catScore,bugScore);
         });
     }
 
