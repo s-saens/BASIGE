@@ -30,7 +30,7 @@ public class GameResult : MonoBehaviour
     }
     public void setText(string winner, int catScore,int bugScore){
         
-        if(MyClientData.id.Equals(winner)){
+        if(ServerData.myClient.id.Equals(winner)){
             this.winner.text="You Win!";
         }
         else{

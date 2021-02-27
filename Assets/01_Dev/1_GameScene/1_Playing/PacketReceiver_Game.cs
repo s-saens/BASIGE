@@ -31,42 +31,37 @@ public class PacketReceiver_Game : MonoBehaviour {
 
         ServerData.socket.On("render", (data) => {
 
+
             jObject = JObject.Parse(data);
-            
-            Debug.Log(jObject["userList"]);
 
             // ServerData 조지기
 
             ServerData.gameId = jObject["gameId"].ToObject<string>();
             ServerData.timer = jObject["timer"].ToObject<int>();
             ServerData.blocks = jObject["map"].ToObject<Block[][]>();
-            MyClientData.id=jObject["socketId"].ToObject<string>();
 
-            Dictionary<string, JObject> usersList = jObject["userList"].ToObject<Dictionary<string, JObject>>();
-            foreach(KeyValuePair<string, JObject> userPair in usersList) {
-                Debug.Log(userPair.Value.ToString());
-                string tempid=userPair.Value["id"].ToObject<string>();
-                if(MyClientData.id.Equals(tempid)){
-                    MyClientData.nickname=userPair.Value["nickname"].ToObject<string>();
-                    MyClientData.userType=userPair.Value["type"].ToObject<UserType>();
-                }
-                switch(userPair.Value["type"].ToObject<UserType>()) {
-                    case UserType.CAT :
-                        ServerData.cat = userPair.Value.ToObject<Cat>(); // cat 할당
-                        break;
-                    case UserType.BUG :
-                        Bug bug = userPair.Value.ToObject<Bug>();
-                        ServerData.bugs.Add(bug.id, bug); // bugs 할당
-                        break;
+            string socketId = jObject["socketId"].ToObject<string>();
+            Debug.Log("Matched successfully! game id is : " + socketId);
+
+            Dictionary<string, User> usersList = jObject["userList"].ToObject<Dictionary<string,User>>();
+            foreach(KeyValuePair<string, User> userPair in usersList) {
+
+                userPair.Value.isMoving = false; // isMoving은 클라의 User에만 있음
+                // (이 유저의 아이디 == 내 소켓의 아이디) 내클라이언트(myClient)에 넣어주기
+                if(socketId == userPair.Value.id) {
+                    ServerData.myClient = userPair.Value;
+                    Debug.Log(ServerData.myClient.isMoving);
                 }
             }
-            // 렌더링하기
-            Debug.Log(ServerData.gameId);
-            Debug.Log(MyClientData.id);
-            GameRenderer gameRenderer = this.GetComponent<GameRenderer>();
-            gameRenderer.Render();
 
-            this.GetComponent<CameraWork>().setCamera();
+            // 서버의 usersList와 클라이언트의 ServerData.users 동기화
+            ServerData.users = usersList;
+
+
+            // 렌더링하고 카메라 세팅
+            this.GetComponent<GameRenderer>().Render();
+            this.GetComponent<CameraWork>().SetCamera();
+
         });
 
     }
@@ -74,7 +69,11 @@ public class PacketReceiver_Game : MonoBehaviour {
     // 패킷 없음! //
     private void Add_GameStart() {
         ServerData.socket.On("game_start", () => {
-            // TODO 클라이언트 조작가능하게 변경 : 스크립트 컴포넌트 SetActive
+
+            // MoveManager Activate
+            MoveManager moveManager = this.GetComponent<MoveManager>();
+            moveManager.isActive = true;
+
         });
     }
 
@@ -88,12 +87,11 @@ public class PacketReceiver_Game : MonoBehaviour {
     }
 
     private void Add_Refresh() {
-        ServerData.socket.On("refresh", (data) => {
 
-            // TODO Move 코루틴 호출
-            // TODO ServerData 갱신
-            // TODO timer, minimap, score 등 UI 갱신
-            Debug.Log("글쿠만");
+        ServerData.socket.On("refresh", (data) => {
+            
+            Debug.Log("refreshed");
+
             jObject = JObject.Parse(data);
 
             // ServerData 조지기
@@ -105,19 +103,15 @@ public class PacketReceiver_Game : MonoBehaviour {
             foreach(KeyValuePair<string, JObject> animationPair in animationDict) {
 
                 string id = animationPair.Key;
-                Direction dir = animationPair.Value["direction"].ToObject<Direction>();
-                Position pos = animationPair.Value["position"].ToObject<Position>();
-                Debug.Log(dir);
-                GameObject movingObject=new GameObject();
-                if(MyClientData.userType==UserType.CAT){
-                    movingObject=InGameData.catObject;
-                }
-                if(MyClientData.userType==UserType.BUG){
-                    InGameData.bugObjectsDict.TryGetValue(id, out movingObject);
-                }
 
+                Direction dir = animationPair.Value["direction"].ToObject<Direction>();
+                Position pos = animationPair.Value["position"].ToObject<Position>(); // 이건 무결성 점검용?
+
+                User movingUser = ServerData.users[id];
+                
                 MoveManager moveManager = this.GetComponent<MoveManager>();
-                moveManager.movePlayer(movingObject, dir);
+                StartCoroutine(moveManager.Move(movingUser, dir));
+
             }
 
         });

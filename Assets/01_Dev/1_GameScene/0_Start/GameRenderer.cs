@@ -21,8 +21,7 @@ public class GameRenderer : MonoBehaviour {
     public void Render() {
 
         RenderBlocks();
-        RenderCat();
-        RenderBugs();
+        RenderUsers();
         SendCompletePacket();
 
     }
@@ -39,22 +38,27 @@ public class GameRenderer : MonoBehaviour {
         wallObject.SetActive(true);
     }
 
-    private void RenderCat() {
-        GameObject cat = Instantiate(catPrefab, ServerData.cat.GetUnityPosition(), Quaternion.Euler(0,0,0));
-        InGameData.catObject = cat;
-        InGameData.catObject.transform.parent = parent_cat;        // 분류
-        InGameData.catObject.transform.name = ServerData.cat.id;   // 이름
+    private void RenderUsers() {
 
-    }
+        foreach(KeyValuePair<string, User> userPair in ServerData.users) {
 
-    private void RenderBugs() {
+            GameObject prefab = null;
 
-        foreach(KeyValuePair<string, Bug> bugPair in ServerData.bugs) {
+            switch(userPair.Value.type) {
+                case UserType.CAT :
+                    prefab = catPrefab;
+                    break;
+                case UserType.BUG :
+                    prefab = bugPrefab;
+                    break;
+            }
+            
+            GameObject user = Instantiate(prefab, userPair.Value.GetUnityPosition(), Quaternion.Euler(0,0,0)) as GameObject;
+            InGameData.userObjects.Add (userPair.Value.id, user);
 
-            GameObject bug = Instantiate(bugPrefab, bugPair.Value.GetUnityPosition(), Quaternion.Euler(0,0,0)) as GameObject;
-            InGameData.bugObjectsDict.Add (bugPair.Value.id, bug);
-            bug.transform.parent = parent_bug;          // 분류
-            bug.transform.name = bugPair.Value.id;      // 이름
+            // 이름과 부모오브젝트 지정해주기
+            user.transform.parent = parent_bug;          // 분류
+            user.transform.name = userPair.Value.id;      // 이름
 
         }
 
@@ -66,6 +70,7 @@ public class GameRenderer : MonoBehaviour {
         jObject.Add("gameId", ServerData.gameId);
         jObject.Add("complete", true);
         ServerData.socket.EmitJson("render_complete", jObject.ToString(Formatting.None)); // 인덴트 없이 보내기
+        Debug.Log(jObject.ToString());
     }
 
 }

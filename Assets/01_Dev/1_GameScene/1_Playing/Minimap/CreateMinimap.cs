@@ -5,13 +5,11 @@ using UnityEngine.UI;
 
 public class CreateMinimap : MonoBehaviour
 {
+
     public GameObject Map_prefab_Area;
 
     private GameObject[][] MapFrame;
     private float refreshTime=0;
-
-
-
 
     void initialize(){
         
@@ -56,13 +54,21 @@ public class CreateMinimap : MonoBehaviour
 
                     for(int j=0;j<20;j++){
                         for(int i=0;i<20;i++){
-                            Bug tempBug;
+
                             if(ServerData.blocks[w*20+i][h*20+j].owner != null) {
-                                ServerData.bugs.TryGetValue(ServerData.blocks[w*20+i][h*20+j].owner, out tempBug);   //����
-                                if(tempBug.type==UserType.CAT)
-                                    TemporalRateOfBlock++;
-                                else if(tempBug.type==UserType.BUG)
-                                    TemporalRateOfBlock--;
+
+                                User user = ServerData.users[ServerData.blocks[w*20+i][h*20+j].owner];
+
+                                switch(user.type) {
+
+                                    case UserType.BUG :
+                                        TemporalRateOfBlock++;
+                                        break;
+                                    case UserType.CAT :
+                                        TemporalRateOfBlock--;
+                                        break;
+
+                                }
                             }
                         }
                     }

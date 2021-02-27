@@ -13,8 +13,8 @@ public class ServerData { // 한 게임의 Server의 GameLayout 클래스
     public static int timer;
 
     public static Block[][] blocks;
-    public static Dictionary<string, Bug> bugs;
-    public static Cat cat;
+    public static Dictionary<string, User> users;
+    public static User myClient;
 
     public static int mapSize = 100;
 
@@ -26,9 +26,9 @@ public class ServerData { // 한 게임의 Server의 GameLayout 클래스
         for(int i=0 ; i<mapSize ; ++i) {
             blocks[i] = new Block[mapSize];
         }
-        cat=new Cat();
-        // bugs : Dictionary 객체 생성
-        bugs = new Dictionary<string, Bug>();
+
+        // 유저 객체
+        users = new Dictionary<string, User>();
     }
 }
 
@@ -48,7 +48,7 @@ public class User {
 
     public UserType type;
 
-    public string id;
+    public string id; // 소켓 아이디
     public string nickname;
 
     public int size;
@@ -61,6 +61,9 @@ public class User {
     public bool isAlive;
 
     public UserState userState;
+
+    // client only
+    public bool isMoving;
     
     public Vector3 GetUnityPosition() {
         Vector2 convertedXZ;

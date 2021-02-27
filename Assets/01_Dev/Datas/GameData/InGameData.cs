@@ -5,8 +5,7 @@ public class InGameData {
     
     // 3D Objects
     public static GameObject[][] blockObjects;
-    public static Dictionary<string, GameObject> bugObjectsDict;
-    public static GameObject catObject;
+    public static Dictionary<string, GameObject> userObjects;
 
     public static void Initialize() {
         
@@ -16,7 +15,7 @@ public class InGameData {
             blockObjects[i] = new GameObject[ServerData.mapSize];
         }
         // bugs 게임오브젝트 Dictionary 객체 생성
-        bugObjectsDict = new Dictionary<string, GameObject>();
+        userObjects = new Dictionary<string, GameObject>();
 
     }
 
