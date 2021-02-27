@@ -41,7 +41,7 @@ public class PacketReceiver_Game : MonoBehaviour {
             ServerData.blocks = jObject["map"].ToObject<Block[][]>();
 
             string socketId = jObject["socketId"].ToObject<string>();
-            Debug.Log("Matched successfully! game id is : " + socketId);
+            Debug.Log("Matched successfully! socket id is : " + socketId);
 
             Dictionary<string, User> usersList = jObject["userList"].ToObject<Dictionary<string,User>>();
             foreach(KeyValuePair<string, User> userPair in usersList) {
@@ -90,15 +90,15 @@ public class PacketReceiver_Game : MonoBehaviour {
 
         ServerData.socket.On("refresh", (data) => {
             
-            Debug.Log("refreshed");
-
             jObject = JObject.Parse(data);
 
             // ServerData 조지기
             ServerData.timer = jObject["timer"].ToObject<int>();
-            ServerData.blocks = jObject["map"].ToObject<Block[][]>();
 
-            // 움직일거 움직이기
+            Debug.Log("refreshed : \n" + jObject["animationList"].ToString());
+
+            //
+            // 움직일거 움직이기 -
             Dictionary<string, JObject> animationDict = jObject["animationList"].ToObject<Dictionary<string,JObject>>();
             foreach(KeyValuePair<string, JObject> animationPair in animationDict) {
 
