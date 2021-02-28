@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 0890b5704e80e87449314e8aa12df877
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - blockPrefab: {fileID: 3820907684111319269, guid: e6e8260b39596424aa81ae1fd8d301a9,
+      type: 3}
+  - bugPrefab: {fileID: 7582394764920847231, guid: 67ff9f1a05fa31447b3867223d8e33d5,
+      type: 3}
+  - catPrefab: {fileID: 1357795561751884808, guid: 19f82a92f06dc824e831319da3336f7c,
+      type: 3}
+  - parent_blocks: {instanceID: 0}
+  - parent_bug: {instanceID: 0}
+  - parent_cat: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

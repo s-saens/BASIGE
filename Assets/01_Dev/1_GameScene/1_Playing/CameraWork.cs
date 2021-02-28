@@ -44,7 +44,6 @@ public class CameraWork : MonoBehaviour
         if(!camIsActive) return;
         
         Vector3 pre = camPivot.position;
-        destPos = InGameData.userObjects[ServerData.myClient.id].transform.position;
         camPivot.position=Vector3.Lerp(pre, destPos, 3 * Time.deltaTime);
     }
 }
