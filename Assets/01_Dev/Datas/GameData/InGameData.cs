@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class InGameData {
     
@@ -19,13 +21,11 @@ public class InGameData {
 
     }
 
-    public static void UpdateBlockObject() {
-        for(int y=0 ; y<ServerData.mapSize ; ++y) {
-            for(int x=0 ; x<ServerData.mapSize ; ++x) {
+    public static void UpdateBlocks(Position pos) {
+        
+        Material mat = blockObjects[pos.y][pos.x].GetComponent<MeshRenderer>().material;
+        mat.DOColor(ServerData.blocks[pos.y][pos.x].GetColor(), 0.4f);
 
-                //blockObjects[y][x].GetComponent<MeshRenderer>().material.SetColor();
-
-            }
-        }
     }
+
 }

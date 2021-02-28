@@ -1,13 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
 
 public class PacketReceiver_Game : MonoBehaviour {
-
-    Queue<IEnumerator> eventQueue = new Queue<IEnumerator>();
 
     private void Start() {
 
@@ -15,6 +11,7 @@ public class PacketReceiver_Game : MonoBehaviour {
 
         Add_Render();
         Add_SkillResult();
+        Add_GameStart();
         Add_Refresh();
         Add_Dead();
         Add_ChangeCat();
@@ -38,25 +35,24 @@ public class PacketReceiver_Game : MonoBehaviour {
 
             ServerData.gameId = jObject["gameId"].ToObject<string>();
             ServerData.timer = jObject["timer"].ToObject<int>();
-            ServerData.blocks = jObject["map"].ToObject<Block[][]>();
+            Block[][] blocks = jObject["map"].ToObject<Block[][]>();
 
-            string socketId = jObject["socketId"].ToObject<string>();
-            Debug.Log("Matched successfully! game id is : " + socketId);
+
+            string socketId = jObject["socketId"].ToObject<string>(); // myId
+            Debug.Log("Matched successfully! socket id is : " + socketId);
 
             Dictionary<string, User> usersList = jObject["userList"].ToObject<Dictionary<string,User>>();
-            foreach(KeyValuePair<string, User> userPair in usersList) {
 
-                userPair.Value.isMoving = false; // isMoving은 클라의 User에만 있음
-                // (이 유저의 아이디 == 내 소켓의 아이디) 내클라이언트(myClient)에 넣어주기
-                if(socketId == userPair.Value.id) {
-                    ServerData.myClient = userPair.Value;
-                    Debug.Log(ServerData.myClient.isMoving);
-                }
+            // Client only 속성 초기화
+            foreach(KeyValuePair<string, User> userPair in usersList) {
+                userPair.Value.isMoving = false;
+                userPair.Value.cQueue = new CoroutineQueue(1000000, StartCoroutine);
             }
 
             // 서버의 usersList와 클라이언트의 ServerData.users 동기화
             ServerData.users = usersList;
-
+            // myClient!
+            ServerData.myClient = ServerData.users[socketId];
 
             // 렌더링하고 카메라 세팅
             this.GetComponent<GameRenderer>().Render();
@@ -68,11 +64,11 @@ public class PacketReceiver_Game : MonoBehaviour {
 
     // 패킷 없음! //
     private void Add_GameStart() {
-        ServerData.socket.On("game_start", () => {
+        ServerData.socket.On("game_start", (data) => {
 
             // MoveManager Activate
             MoveManager moveManager = this.GetComponent<MoveManager>();
-            moveManager.isActive = true;
+            moveManager.isActive = JObject.Parse(data)["start"].ToObject<bool>();
 
         });
     }
@@ -90,15 +86,27 @@ public class PacketReceiver_Game : MonoBehaviour {
 
         ServerData.socket.On("refresh", (data) => {
             
-            Debug.Log("refreshed");
-
             jObject = JObject.Parse(data);
 
             // ServerData 조지기
             ServerData.timer = jObject["timer"].ToObject<int>();
-            ServerData.blocks = jObject["map"].ToObject<Block[][]>();
 
-            // 움직일거 움직이기
+            Debug.Log("refreshed : \n" + jObject["map"].ToString());
+
+            // 블록 업데이트
+            List<JObject> differedBlockList = jObject["map"].ToObject<List<JObject>>();
+            
+            foreach(JObject differed in differedBlockList) {
+
+                Position blockPos = differed["position"].ToObject<Position>();
+                Block differedBlock = differed["block"].ToObject<Block>();
+                ServerData.blocks[blockPos.y][blockPos.x] = differedBlock;
+                InGameData.UpdateBlocks(blockPos);
+
+            }
+            
+
+            // 움직일거 움직이기 - 유저
             Dictionary<string, JObject> animationDict = jObject["animationList"].ToObject<Dictionary<string,JObject>>();
             foreach(KeyValuePair<string, JObject> animationPair in animationDict) {
 
@@ -110,7 +118,8 @@ public class PacketReceiver_Game : MonoBehaviour {
                 User movingUser = ServerData.users[id];
                 
                 MoveManager moveManager = this.GetComponent<MoveManager>();
-                StartCoroutine(moveManager.Move(movingUser, dir));
+                
+                movingUser.cQueue.Run(moveManager.Move(movingUser, dir));
 
             }
 
