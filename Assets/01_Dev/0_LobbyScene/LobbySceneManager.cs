@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -37,9 +35,12 @@ public class LobbySceneManager : MonoBehaviour
 
     public void cancel()
     {
+        
         JObject idJSON = new JObject();
+
         idJSON.Add("nickname", ServerData.gameId);
         ServerData.socket.EmitJson("leave", idJSON.ToString());
+
         SceneManager.LoadScene(0);
     }
 

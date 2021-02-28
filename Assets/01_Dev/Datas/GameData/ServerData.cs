@@ -42,6 +42,12 @@ public class Block {
         this.userList = userList;
     }
 
+    public Color GetColor() {
+
+        return ServerData.users[owner].GetColor();
+
+    }
+
 }
 
 public class User {
@@ -65,6 +71,16 @@ public class User {
     // client only
     public bool isMoving;
     
+    public Color GetColor() {
+
+        Color color; // owner's color
+        string ownerColorHex = this.color;
+        ColorUtility.TryParseHtmlString(ownerColorHex, out color);
+
+        return color;
+
+    }
+
     public Vector3 GetUnityPosition() {
         Vector2 convertedXZ;
         float convertedY;

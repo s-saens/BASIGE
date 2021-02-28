@@ -9,14 +9,14 @@ using Newtonsoft.Json.Linq;
 public class GameRenderer : MonoBehaviour {
 
     // must be assigned in the inspector
-    private GameObject blockPrefab;
-    private GameObject bugPrefab;
-    private GameObject catPrefab;
-    private GameObject wallObject;
+    public GameObject blockPrefab;
+    public GameObject bugPrefab;
+    public GameObject catPrefab;
+    public GameObject wallObject;
 
-    private Transform parent_blocks;
-    private Transform parent_bug;
-    private Transform parent_cat;
+    public Transform parent_blocks;
+    public Transform parent_bug;
+    public Transform parent_cat;
 
     public void Render() {
 

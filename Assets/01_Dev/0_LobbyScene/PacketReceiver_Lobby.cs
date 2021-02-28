@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class PacketReceiver_Lobby : MonoBehaviour {
 
 
-    private void Start() {
+    private void Awake() {
         Add_MatchStatus();
     }
 
@@ -17,6 +17,7 @@ public class PacketReceiver_Lobby : MonoBehaviour {
     JObject jObject;
 
     private void Add_MatchStatus() {
+
         ServerData.socket.On("match_status", (data) => { // count, maxCount
 
             Debug.Log(data);
@@ -32,6 +33,7 @@ public class PacketReceiver_Lobby : MonoBehaviour {
                 SceneManager.LoadScene(2);
             }
         });
+
     }
 
 }

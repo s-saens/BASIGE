@@ -13,6 +13,11 @@ public class MoveManager : MonoBehaviour
     public Joystick joystick;
     public bool isActive = false;
 
+    public void TESTMOVE(int dir) {
+        if(ServerData.myClient.isMoving) return;
+        StartCoroutine(Move(ServerData.myClient, (Direction)dir));
+    }
+
     void Update()
     {
         if(!isActive) return;
@@ -24,17 +29,20 @@ public class MoveManager : MonoBehaviour
         
         if(!ServerData.myClient.isMoving && direction!=Vector3.zero) { // 이미 움직이고있거나 조이스틱이 움직이지 않은 경우 제외
 
-            Direction dir =0;
-            float deadZone=0.2f;
-            if(dirx>deadZone&&dirz>deadZone) dir=Direction.UP;
-            if(dirx<-deadZone&&dirz<-deadZone) dir=Direction.DOWN;
-            if(dirx<-deadZone&&dirz>deadZone) dir=Direction.LEFT;
-            if(dirx>deadZone&&dirz<-deadZone) dir=Direction.RIGHT;
+            ServerData.myClient.isMoving = true;
+            Direction dir = 0;
+            float deadZone = 0.2f;
+
+            if(dirx > deadZone && dirz > deadZone) dir=Direction.UP;
+            if(dirx < -deadZone && dirz < -deadZone) dir=Direction.DOWN;
+            if(dirx < -deadZone && dirz > deadZone) dir=Direction.LEFT;
+            if(dirx > deadZone && dirz < -deadZone) dir=Direction.RIGHT;
 
             JObject json = new JObject();
             json.Add("gameId", ServerData.gameId);
             json.Add("direction", (int)dir);
             ServerData.socket.EmitJson("move", json.ToString(Formatting.None));
+            Debug.Log("무브패킷보냈음!");
         }
     }
 
@@ -51,28 +59,23 @@ public class MoveManager : MonoBehaviour
             case Direction.LEFT: rotation=-90; break;
         }
 
-        player.transform.rotation = Quaternion.Euler(0,rotation,0);
+        player.transform.localEulerAngles = new Vector3(0, rotation, 0);
 
         Vector3 dest = player.transform.position + player.transform.forward;
         float dist = Vector3.Distance(player.transform.position,dest);
-        float speed = ServerData.myClient.velocity * Time.deltaTime;
+        float speed = ServerData.myClient.velocity * Time.deltaTime * 4;
 
-        while(dist >= 0.000001){
+        while(dist >= 0.000001) {
 
             dist=Vector3.Distance(player.transform.position,dest);
-            if(dist>speed) player.transform.Translate(player.transform.forward*speed);
-            else {
-                player.transform.Translate(player.transform.forward*dist);
-                //isMoving 켜기
+            if(dist>speed) player.transform.Translate(player.transform.forward * speed, Space.World);
+            else { // 마지막 시점
+                player.transform.Translate(player.transform.forward * dist, Space.World);
             }
-            yield return Deactivate(user);
-        }
-    }
-
-    private IEnumerator Deactivate(User user) {
-        for(int i=0; i<=0 ; ++i) {
-            user.isMoving = false;
             yield return 0;
         }
+        
+        user.isMoving = false;
     }
+
 }
