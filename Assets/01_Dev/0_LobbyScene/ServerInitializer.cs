@@ -6,8 +6,9 @@ public class ServerInitializer : MonoBehaviour
     
     private string serverURL = "http://203.254.143.190:3000";
 
-    private void Awake() {
+    ServerData data = new ServerData();
 
+    private void Awake() {
         InGameData.Initialize();
         ServerData.InitializeDataObjects();
         
