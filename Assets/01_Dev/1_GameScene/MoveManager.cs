@@ -18,12 +18,14 @@ public class MoveManager : MonoBehaviour
         StartCoroutine(Move(ServerData.myClient, (Direction)dir));
     }
 
+    // Move Packet Send
+    
     void Update()
     {
         if(!isActive) return;
 
-        float dirx=joystick.Horizontal;
-        float dirz=joystick.Vertical;
+        float dirx = joystick.Horizontal;
+        float dirz = joystick.Vertical;
 
         Vector3 direction = new Vector3(joystick.Horizontal,0,joystick.Vertical);
         

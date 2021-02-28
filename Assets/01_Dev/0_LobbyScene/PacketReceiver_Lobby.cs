@@ -26,7 +26,7 @@ public class PacketReceiver_Lobby : MonoBehaviour {
 
             int count = jObject["count"].ToObject<int>();
             int maxCount = jObject["maxCount"].ToObject<int>();
-
+            
             this.GetComponent<LobbySceneManager>().setUserCount(count, maxCount);
             
             if(count == maxCount) {

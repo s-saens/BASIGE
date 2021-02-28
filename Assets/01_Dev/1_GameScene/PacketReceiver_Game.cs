@@ -1,13 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
 
 public class PacketReceiver_Game : MonoBehaviour {
-
-    Queue<IEnumerator> eventQueue = new Queue<IEnumerator>();
 
     private void Start() {
 
@@ -39,16 +35,18 @@ public class PacketReceiver_Game : MonoBehaviour {
 
             ServerData.gameId = jObject["gameId"].ToObject<string>();
             ServerData.timer = jObject["timer"].ToObject<int>();
-            ServerData.blocks = jObject["map"].ToObject<Block[][]>();
+            Block[][] blocks = jObject["map"].ToObject<Block[][]>();
+
 
             string socketId = jObject["socketId"].ToObject<string>(); // myId
             Debug.Log("Matched successfully! socket id is : " + socketId);
 
             Dictionary<string, User> usersList = jObject["userList"].ToObject<Dictionary<string,User>>();
 
-            // isMoving 초기화
+            // Client only 속성 초기화
             foreach(KeyValuePair<string, User> userPair in usersList) {
                 userPair.Value.isMoving = false;
+                userPair.Value.cQueue = new CoroutineQueue(1000000, StartCoroutine);
             }
 
             // 서버의 usersList와 클라이언트의 ServerData.users 동기화
@@ -96,16 +94,16 @@ public class PacketReceiver_Game : MonoBehaviour {
             Debug.Log("refreshed : \n" + jObject["map"].ToString());
 
             // 블록 업데이트
-            // Dictionary<Position, Block> updatingBlocks = jObject["map"].ToObject<Dictionary<Position, Block>>();
+            List<JObject> differedBlockList = jObject["map"].ToObject<List<JObject>>();
             
-            // foreach(KeyValuePair<Position, Block> blockPair in updatingBlocks) {
+            foreach(JObject differed in differedBlockList) {
 
-            //     Position pos = blockPair.Key;
-            //     Block block = blockPair.Value;
-            //     ServerData.blocks[pos.y][pos.x] = block;
-            //     InGameData.UpdateBlocks(pos);
+                Position blockPos = differed["position"].ToObject<Position>();
+                Block differedBlock = differed["block"].ToObject<Block>();
+                ServerData.blocks[blockPos.y][blockPos.x] = differedBlock;
+                InGameData.UpdateBlocks(blockPos);
 
-            // }
+            }
             
 
             // 움직일거 움직이기 - 유저
@@ -120,13 +118,8 @@ public class PacketReceiver_Game : MonoBehaviour {
                 User movingUser = ServerData.users[id];
                 
                 MoveManager moveManager = this.GetComponent<MoveManager>();
-                if(movingUser.id != ServerData.myClient.id){
-                    if(!movingUser.isMoving) {
-                        StartCoroutine(moveManager.Move(movingUser, dir));
-                    }
-                } else {
-                    StartCoroutine(moveManager.Move(movingUser, dir));
-                }
+                
+                movingUser.cQueue.Run(moveManager.Move(movingUser, dir));
 
             }
 
