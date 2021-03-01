@@ -46,12 +46,34 @@ public class User {
         posXZ = pos_int + oneVector * (size-1)/2;
         y = ((float)size)/2;
     }
+
+    public Cat ConvertToCat() {
+
+        Cat cat = new Cat();
+
+        cat.type = this.type;
+        cat.id = this.id;
+        cat.nickname = this.nickname;
+        cat.size = this.size;
+        cat.position = this.position;
+        cat.velocity = this.velocity;
+        cat.color = this.color;
+        cat.isAlive = this.isAlive;
+        cat.userState = this.userState;
+        cat.isMoving = this.isMoving;
+        cat.cQueue = this.cQueue;
+        cat.skills = new Dictionary<string, Skill>();
+
+        return cat;
+
+    }
     
 }
 
 public class Cat : User {
 
     public Dictionary<string, Skill> skills;
+
     public Cat() {}
     public Cat(string idSet, string nicknameSet, Position posSet) {
         

@@ -5,7 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class PacketReceiver_Game : MonoBehaviour {
 
+    MoveManager moveManager;
+
     private void Start() {
+
+        moveManager = this.GetComponent<MoveManager>();
 
         ServerData.InitializeDataObjects();
         AddListeners();
@@ -52,6 +56,9 @@ public class PacketReceiver_Game : MonoBehaviour {
             foreach(KeyValuePair<string, User> userPair in usersList) {
                 userPair.Value.isMoving = false;
                 userPair.Value.cQueue = new CoroutineQueue(1000000, StartCoroutine);
+                if(userPair.Value.type == UserType.CAT) {
+                    ServerData.cat = userPair.Value.ConvertToCat();
+                }
             }
 
             // 서버의 usersList와 클라이언트의 ServerData.users 동기화
@@ -72,7 +79,6 @@ public class PacketReceiver_Game : MonoBehaviour {
         ServerData.socket.On("game_start", (data) => {
 
             // MoveManager Activate
-            MoveManager moveManager = this.GetComponent<MoveManager>();
             moveManager.isActive = JObject.Parse(data)["start"].ToObject<bool>();
 
         });
@@ -93,12 +99,12 @@ public class PacketReceiver_Game : MonoBehaviour {
             
             jObject = JObject.Parse(data);
 
-            // ServerData 조지기
+            ///// ServerData 조지기 /////
             ServerData.timer = jObject["timer"].ToObject<int>();
 
             Debug.Log("refreshed : \n" + jObject["map"].ToString());
 
-            // 블록 업데이트
+            ///// 블록 업데이트 /////
             List<JObject> differedBlockList = jObject["map"].ToObject<List<JObject>>();
             
             foreach(JObject differed in differedBlockList) {
@@ -111,7 +117,7 @@ public class PacketReceiver_Game : MonoBehaviour {
             }
             
 
-            // 움직일거 움직이기 - 유저
+            ///// 움직일거 움직이기 - 유저 /////
             Dictionary<string, JObject> animationDict = jObject["animationList"].ToObject<Dictionary<string,JObject>>();
             foreach(KeyValuePair<string, JObject> animationPair in animationDict) {
 
@@ -122,11 +128,17 @@ public class PacketReceiver_Game : MonoBehaviour {
 
                 User movingUser = ServerData.users[id];
                 
-                MoveManager moveManager = this.GetComponent<MoveManager>();
-                
+                if(movingUser.position.Equals(pos))
+
                 movingUser.cQueue.Run(moveManager.Move(movingUser, dir));
 
             }
+
+            ///// 스킬 쓰기 -  /////
+            ServerData.cat = jObject["cat"].ToObject<Cat>();
+            // 버튼의 쿨타임 갱신
+            SkillManager skillManager = this.GetComponent<SkillManager>();
+            skillManager.
 
         });
     }
@@ -136,7 +148,16 @@ public class PacketReceiver_Game : MonoBehaviour {
 
             Debug.Log(data);
             jObject = JObject.Parse(data);
-            // TODO 죽어서 창 띄우기
+            
+            ///// 오브젝트 파괘! /////
+            string deadUserId = jObject["id"].ToObject<string[]>()[0];
+            // 1) 실제 게임오브젝트 인스턴스 삭제 
+            Destroy(InGameData.userObjects[deadUserId]);
+            // 2) InGameData, ServerData에서 삭제
+            InGameData.userObjects.Remove(deadUserId);
+            ServerData.users.Remove(deadUserId);
+
+
         });
     }
 
@@ -145,7 +166,9 @@ public class PacketReceiver_Game : MonoBehaviour {
 
             Debug.Log(data);
             jObject = JObject.Parse(data);
-            // TODO MyClientData 갱신, CameraPivot을 MyClient.myObject의 위치로 이동
+
+            ServerData.cat = ServerData.users[jObject["id"].ToObject<string>()].ConvertToCat();
+
         });
     }
 
@@ -154,7 +177,7 @@ public class PacketReceiver_Game : MonoBehaviour {
 
             Debug.Log(data);
             jObject = JObject.Parse(data);
-            // TODO 해당 유저 파괴하기 (본인 클라이언트의 유저라면 시작화면으로)
+
         });
     }
 
@@ -171,6 +194,7 @@ public class PacketReceiver_Game : MonoBehaviour {
             SceneManager.LoadScene(2);
             GameResult gameResult=this.GetComponent<GameResult>();
             gameResult.setText(winner,catScore,bugScore);
+            
         });
     }
 

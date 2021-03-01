@@ -12,6 +12,7 @@ public class ServerData : MonoBehaviour{ // 한 게임의 Server의 GameLayout �
     public static Block[][] blocks;
     public static Dictionary<string, User> users;
     public static User myClient;
+    public static Cat cat;
 
     public static int mapSize = 100;
 
