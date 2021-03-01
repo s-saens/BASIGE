@@ -8,6 +8,11 @@ public class PacketReceiver_Game : MonoBehaviour {
     private void Start() {
 
         ServerData.InitializeDataObjects();
+        AddListeners();
+        
+    }
+
+    private void AddListeners() {
 
         Add_Render();
         Add_SkillResult();
