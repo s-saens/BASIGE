@@ -1,15 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class PacketReceiver_Game : MonoBehaviour {
 
     MoveManager moveManager;
+    SkillManager skillManager;
 
     private void Start() {
 
         moveManager = this.GetComponent<MoveManager>();
+        skillManager = this.GetComponent<SkillManager>();
 
         ServerData.InitializeDataObjects();
         AddListeners();
@@ -84,14 +87,6 @@ public class PacketReceiver_Game : MonoBehaviour {
         });
     }
 
-    private void Add_SkillResult() {
-        ServerData.socket.On("skill_result", (data) => {
-
-            jObject = JObject.Parse(data);
-            Debug.Log(jObject[""]);
-
-        });
-    }
 
     private void Add_Refresh() {
 
@@ -138,12 +133,28 @@ public class PacketReceiver_Game : MonoBehaviour {
             ServerData.cat = jObject["cat"].ToObject<Cat>();
             // 버튼의 쿨타임 갱신
             SkillManager skillManager = this.GetComponent<SkillManager>();
-            skillManager.
 
         });
     }
 
+    private void Add_SkillResult() {
+
+        ServerData.socket.On("skill_result", (data) => {
+
+            jObject = JObject.Parse(data);
+            bool canUse = jObject["skillResult"].ToObject<bool>();
+            int coolTimeRemain = jObject["coolTime"].ToObject<int>();
+
+            if(canUse) {
+                skillManager.UseSkill(SkillType.SCRATCH);
+            }
+
+        });
+
+    }
+
     private void Add_Dead() {
+
         ServerData.socket.On("dead", (data) => {
 
             Debug.Log(data);
@@ -159,12 +170,12 @@ public class PacketReceiver_Game : MonoBehaviour {
 
 
         });
+
     }
 
     private void Add_ChangeCat() {
         ServerData.socket.On("change_cat", (data) => {
 
-            Debug.Log(data);
             jObject = JObject.Parse(data);
 
             ServerData.cat = ServerData.users[jObject["id"].ToObject<string>()].ConvertToCat();
@@ -175,7 +186,6 @@ public class PacketReceiver_Game : MonoBehaviour {
     private void Add_Ban() {
         ServerData.socket.On("ban", (data) => {
 
-            Debug.Log(data);
             jObject = JObject.Parse(data);
 
         });
@@ -184,7 +194,6 @@ public class PacketReceiver_Game : MonoBehaviour {
     private void Add_GameResult() {
         ServerData.socket.On("game_result", (data) => {
 
-            Debug.Log(data);
             jObject = JObject.Parse(data);
             string winner=jObject["winner"].ToObject<string>();
             int catScore=jObject["catScore"].ToObject<int>();

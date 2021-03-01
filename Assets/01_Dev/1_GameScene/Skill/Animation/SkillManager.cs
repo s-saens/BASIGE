@@ -1,55 +1,125 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
+using System.Collections;
 using Newtonsoft.Json.Linq;
  
 public class SkillManager : MonoBehaviour 
 {
-    public Animation animation;
-    public Image skillFilter;
-    public Text scratch_coolTimeText; //남은 쿨타임을 표시할 텍스트
-    public Text boost_coolTimeText;
+    public Image[] skillFilter = new Image[2]; // 쿨타임을 시각화하는 필터
+    private Text[] coolTimeText = new Text[2]; //남은 쿨타임을 표시할 텍스트
 
-    private Dictionary<string, Skill> skills = ServerData.cat.skills;
+    public Animation anim;
+
+    [HideInInspector]
+    public int[] coolTime = new int[2]; // 총 쿨타임 (초)
+    [HideInInspector]
+    public int[] currentCoolTime = new int[2]; //남은 쿨타임을 추적 할 변수
+    [HideInInspector]
+    public bool[] canUseSkill = new bool[2] {true, true}; //스킬을 사용할 수 있는지 확인하는 변수
  
     void start()
     {
-        skillFilter.fillAmount = 0; //처음에 스킬 버튼을 가리지 않음
+        coolTime[0] = 30; // boost 쿨타임 (초)
+        coolTime[1] = 30; // scratch 쿨타임
+        currentCoolTime[0] = 0;
+        currentCoolTime[1] = 0;
+        coolTimeText[0] = skillFilter[0].transform.GetChild(0).GetComponent<Text>();
+        coolTimeText[1] = skillFilter[1].transform.GetChild(0).GetComponent<Text>();
+        skillFilter[0].fillAmount = 0; //처음에 스킬 버튼을 가리지 않음
+        skillFilter[1].fillAmount = 0; //처음에 스킬 버튼을 가리지 않음
     }
  
-    public void SendSkillPacket(string skillName) { // 버튼 누르면 실행됨
-
-        if(CanUseSkill(skillName)) {
-
-            JObject jObject = new JObject();
-            jObject.Add("gameId", ServerData.gameId);
-            jObject.Add("skill", skillName);
-
-            ServerData.socket.Emit(jObject.ToString());
-
-        }
-    }
-
-    public void UseSkill(string skillName) // 패킷 받으면 실행됨
+    public void UseSkill(SkillType skillType)
     {
-        Debug.Log("Use Skill");
-        skillFilter.fillAmount = 1; //스킬 버튼을 보여줌
+        if (canUseSkill[(int)skillType])
+        {
+            skillFilter[(int)skillType].fillAmount = 1; //스킬 버튼을 가림
+            StartCoroutine(Cooltime(skillType));
+ 
+            currentCoolTime[(int)skillType] = coolTime[(int)skillType] + 1;
+            coolTimeText[(int)skillType].text = "" + currentCoolTime;
 
-        switch (skillName) {
-            case "scratch" :
-                animation.Play("Scratch");
-                break;
-            case "boost" :
-                break;
+            StartCoroutine(CoolTimeCounter(skillType));
+ 
+            canUseSkill[(int)skillType] = false; //스킬을 사용하면 사용할 수 없는 상태로 바꿈
+        }
+        else
+        {
+            Debug.Log("아직 스킬을 사용할 수 없습니다.");
         }
 
-        scratch_coolTimeText.text = "" + skills[skillName].coolProcess;
-        skills[skillName].coolProcess = 600;
+        if( skillType == SkillType.SCRATCH ) {
+
+            ServerData.cat.cQueue.Run(anim.GetEnumerator());
+
+        }
+        
+    }
+ 
+    IEnumerator Cooltime(SkillType skillType)
+    {
+        while(skillFilter[(int)skillType].fillAmount > 0)
+        {
+            // 쿨타임 비율만큼 버튼을 가림
+            skillFilter[(int)skillType].fillAmount -= 1 * Time.smoothDeltaTime / coolTime[0];
+            int vel = 1;
+
+            switch(skillType) {
+
+                case SkillType.BOOST :
+                    if(currentCoolTime[(int)skillType] < 0.5f) vel = 2;
+                    else vel = 1;
+                    ServerData.cat.velocity = vel;
+                    break;
+
+                case SkillType.SCRATCH :
+                    // nothing
+                    break;
+
+            }
+ 
+            yield return 0;
+        }
+ 
+        canUseSkill[(int)skillType] = true; //스킬 쿨타임이 끝나면 스킬을 사용할 수 있는 상태로 바꿈
+        yield break;
+    }
+ 
+    //남은 쿨타임을 계산할 코르틴을 만들어줍니다.
+    IEnumerator CoolTimeCounter(SkillType skillType)
+    {
+        while(currentCoolTime[(int)skillType] > 0)
+        {
+            yield return new WaitForSeconds(1.0f);
+            currentCoolTime[(int)skillType] -= 1;
+            coolTimeText[(int)skillType].text = "" + currentCoolTime[(int)skillType];
+        }
     }
 
-    private bool CanUseSkill(string skillName) {
+    public void SendSkillPacket(SkillType skillType) {
+        
+        JObject jObject = new JObject();
 
-        return skills[skillName].coolProcess <= 0 ; // 쿨타임이 0이면 스킬 쓸 수 있음
+        string skillName="";
 
+        if(canUseSkill[(int)skillType]) {
+
+            switch(skillType) {
+
+                case SkillType.BOOST :
+                    skillName = "boost";
+                    break;
+
+                case SkillType.SCRATCH :
+                    skillName = "scratch";
+                    break;
+            }
+
+        }
+        jObject.Add(ServerData.gameId);
+        jObject.Add("skill", skillName);
+
+        ServerData.socket.Emit(jObject.ToString());
     }
+
 }

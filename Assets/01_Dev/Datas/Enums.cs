@@ -23,6 +23,11 @@ public enum SkillResult {
     NO_COOL
 }
 
+public enum SkillType {
+    BOOST,
+    SCRATCH
+}
+
 public enum UserState {
     READY,
     PLAYING,
