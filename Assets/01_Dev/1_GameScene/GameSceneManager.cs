@@ -16,6 +16,7 @@ public class GameSceneManager : MonoBehaviour
     {
         JObject idJSON = new JObject();
         idJSON.Add("nickname", ServerData.gameId);
+        this.GetComponent<PacketReceiver_Game>().RemoveListeners();
         ServerData.socket.EmitJson("leave", idJSON.ToString());
         SceneManager.LoadScene(0);
     }

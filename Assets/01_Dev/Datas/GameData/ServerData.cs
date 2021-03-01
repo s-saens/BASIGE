@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ServerData : MonoBehaviour{ // 한 게임의 Server의 GameLayout 클래스
 
-    public static Socket socket;
+    public static Socket socket = null;
 
     public static string gameId;
     public static int timer;

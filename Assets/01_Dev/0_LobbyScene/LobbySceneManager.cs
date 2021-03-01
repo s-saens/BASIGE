@@ -12,6 +12,7 @@ public class LobbySceneManager : MonoBehaviour
     public Text userCount;
     public GameObject canvas_matching;
     public GameObject canvas_main;
+    public CountUpTimer timer;
     
     // Input Scene to Matching Scene
     
@@ -23,20 +24,20 @@ public class LobbySceneManager : MonoBehaviour
         }
         else
         {
+
             string nickname = inputName.text;
             inputName.text = "";
 
             JObject idJSON = new JObject();
             idJSON.Add("nickname", nickname);
 
-            Debug.Log(ServerData.socket.Url.UserInfo);
+            this.GetComponent<PacketReceiver_Lobby>().Add_MatchStatus();
 
             ServerData.socket.EmitJson("init", idJSON.ToString(Formatting.None));
-
             canvas_matching.SetActive(true);
             canvas_main.SetActive(false);
+            timer.CountStart();
 
-            this.GetComponent<PacketReceiver_Lobby>().Add_MatchStatus();
 
         }
     }
@@ -47,11 +48,12 @@ public class LobbySceneManager : MonoBehaviour
         JObject idJSON = new JObject();
 
         idJSON.Add("nickname", ServerData.gameId);
+        ServerData.socket.Off("match_status");
         ServerData.socket.EmitJson("leave", idJSON.ToString());
-        this.GetComponent<ServerInitializer>().Awake(); // ReInitialize server socket
-
         canvas_main.SetActive(true);
         canvas_matching.SetActive(false);
+        this.GetComponent<ServerInitializer>().Awake();
+
     }
 
     public void setUserCount(int count, int maxCount) {
@@ -77,6 +79,7 @@ public class LobbySceneManager : MonoBehaviour
             int count = jObject["count"].ToObject<int>();
             int maxCount = jObject["maxCount"].ToObject<int>();
 
+            Debug.Log(count);
             this.GetComponent<LobbySceneManager>().setUserCount(count, maxCount);
             
             if(count == maxCount) {

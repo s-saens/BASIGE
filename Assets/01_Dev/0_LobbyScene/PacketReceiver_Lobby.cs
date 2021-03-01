@@ -9,17 +9,13 @@ public class PacketReceiver_Lobby : MonoBehaviour {
 
     LobbySceneManager lobbySceneManager;
 
-    private void Start() {
-
-        lobbySceneManager = this.GetComponent<LobbySceneManager>();
-
-    }
-
     // Listeners
 
     JObject jObject;
 
     public void Add_MatchStatus() {
+
+        lobbySceneManager = this.GetComponent<LobbySceneManager>();
 
         ServerData.socket.On("match_status", (data) => { // count, maxCount
 

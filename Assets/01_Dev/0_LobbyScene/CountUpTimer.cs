@@ -10,7 +10,7 @@ public class CountUpTimer : MonoBehaviour
     float sec;
     float min;
 
-    private void Start()
+    public void CountStart()
     {
         StartCoroutine("StopWatch");
     }

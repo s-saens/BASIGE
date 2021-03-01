@@ -251,7 +251,7 @@ namespace socket.io {
         /// <summary>
         /// The URL of the remote host which socket connected
         /// </summary>
-        public Uri Url { get; private set; }
+        public Uri Url { get; set; }
         
         /// <summary>
         /// Namespace ("/" is the default namespace which means global namespace.)

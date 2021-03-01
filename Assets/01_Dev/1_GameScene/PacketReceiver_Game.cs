@@ -34,6 +34,19 @@ public class PacketReceiver_Game : MonoBehaviour {
 
     }
 
+    public void RemoveListeners() {
+
+        ServerData.socket.Off("render");
+        ServerData.socket.Off("skill_result");
+        ServerData.socket.Off("game_start");
+        ServerData.socket.Off("refresh");
+        ServerData.socket.Off("dead");
+        ServerData.socket.Off("change_cat");
+        ServerData.socket.Off("ban");
+        ServerData.socket.Off("game_result");
+        
+    }
+
     // Listeners
 
     JObject jObject;
@@ -157,16 +170,16 @@ public class PacketReceiver_Game : MonoBehaviour {
             Debug.Log(data);
             jObject = JObject.Parse(data);
             
-            ///// 오브젝트 파괘! /////
-            string[] deadUsers = jObject["id"].ToObject<string[]>();
-            if(deadUsers.) {
-                string deadUserId = deadUsers[0];
-                // 1) 실제 게임오브젝트 인스턴스 삭제 
-                Destroy(InGameData.userObjects[deadUserId]);
-                // 2) InGameData, ServerData에서 삭제
-                InGameData.userObjects.Remove(deadUserId);
-                ServerData.users.Remove(deadUserId);
-            }
+            // ///// 오브젝트 파괘! /////
+            // string[] deadUsers = jObject["id"].ToObject<string[]>();
+            // if(deadUsers != null) {
+            //     string deadUserId = deadUsers[0];
+            //     // 1) 실제 게임오브젝트 인스턴스 삭제 
+            //     Destroy(InGameData.userObjects[deadUserId]);
+            //     // 2) InGameData, ServerData에서 삭제
+            //     InGameData.userObjects.Remove(deadUserId);
+            //     ServerData.users.Remove(deadUserId);
+            // }
 
             ///// 관전할건지 나갈건지 선택 /////
 
