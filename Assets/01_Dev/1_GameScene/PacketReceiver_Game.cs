@@ -9,7 +9,7 @@ public class PacketReceiver_Game : MonoBehaviour {
 
         ServerData.InitializeDataObjects();
         AddListeners();
-        
+
     }
 
     private void AddListeners() {
@@ -166,7 +166,8 @@ public class PacketReceiver_Game : MonoBehaviour {
             string winner=jObject["winner"].ToObject<string>();
             int catScore=jObject["catScore"].ToObject<int>();
             int bugScore=jObject["bugScore"].ToObject<int>();
-            // TODO GameResult 창 띄우기
+            
+            // GameResult 창 띄우기
             SceneManager.LoadScene(2);
             GameResult gameResult=this.GetComponent<GameResult>();
             gameResult.setText(winner,catScore,bugScore);
