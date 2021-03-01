@@ -12,17 +12,12 @@ public class ServerInitializer : MonoBehaviour
         if(ServerData.socket != null) {
 
             Destroy(ServerData.socket.gameObject);
-            ServerData.socket = new GameObject(string.Format("socket.io - {0}", serverURL)).AddComponent<Socket>();
-            ServerData.socket.transform.SetParent(SocketManager.Instance.transform, false);
-            ServerData.socket.Url = new Uri(serverURL);
-            SocketManager.Instance.Connect(ServerData.socket); // 재연결!
-
-            return;
         }
+        
+        ServerData.socket = Socket.Connect(serverURL);
         
         InGameData.Initialize();
         ServerData.InitializeDataObjects();
-        ServerData.socket = Socket.Connect(serverURL);
 
     }
     
