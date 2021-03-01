@@ -11,6 +11,15 @@ public class CreateMinimap : MonoBehaviour
     private GameObject[][] MapFrame;
     private float refreshTime=0;
 
+    
+
+    // Start is called before the first frame update
+    void StartMinimap()
+    {
+        initialize();
+        RenderMap();
+    }
+
     void initialize(){
         
         MapFrame = new GameObject[ServerData.mapSize/20][];
@@ -28,15 +37,6 @@ public class CreateMinimap : MonoBehaviour
             }
         }
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        initialize();
-        RenderMap();
-    }
-    
-    // Update is called once per frame
 
     void Update()
     {
