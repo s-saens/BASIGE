@@ -6,11 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class PacketReceiver_Game : MonoBehaviour {
 
+    GameSceneManager gameSceneManager;
     MoveManager moveManager;
     SkillManager skillManager;
 
     private void Start() {
 
+        gameSceneManager = this.GetComponent<GameSceneManager>();
         moveManager = this.GetComponent<MoveManager>();
         skillManager = this.GetComponent<SkillManager>();
 
@@ -59,7 +61,7 @@ public class PacketReceiver_Game : MonoBehaviour {
             foreach(KeyValuePair<string, User> userPair in usersList) {
                 userPair.Value.isMoving = false;
                 userPair.Value.cQueue = new CoroutineQueue(1000000, StartCoroutine);
-                if(userPair.Value.type == UserType.CAT) {
+                if(userPair.Value.type == UserType.CAT) { // cat 넣어주기
                     ServerData.cat = userPair.Value.ConvertToCat();
                 }
             }
@@ -129,11 +131,6 @@ public class PacketReceiver_Game : MonoBehaviour {
 
             }
 
-            ///// 스킬 쓰기 -  /////
-            ServerData.cat = jObject["cat"].ToObject<Cat>();
-            // 버튼의 쿨타임 갱신
-            SkillManager skillManager = this.GetComponent<SkillManager>();
-
         });
     }
 
@@ -161,12 +158,17 @@ public class PacketReceiver_Game : MonoBehaviour {
             jObject = JObject.Parse(data);
             
             ///// 오브젝트 파괘! /////
-            string deadUserId = jObject["id"].ToObject<string[]>()[0];
-            // 1) 실제 게임오브젝트 인스턴스 삭제 
-            Destroy(InGameData.userObjects[deadUserId]);
-            // 2) InGameData, ServerData에서 삭제
-            InGameData.userObjects.Remove(deadUserId);
-            ServerData.users.Remove(deadUserId);
+            string[] deadUsers = jObject["id"].ToObject<string[]>();
+            if(deadUsers.) {
+                string deadUserId = deadUsers[0];
+                // 1) 실제 게임오브젝트 인스턴스 삭제 
+                Destroy(InGameData.userObjects[deadUserId]);
+                // 2) InGameData, ServerData에서 삭제
+                InGameData.userObjects.Remove(deadUserId);
+                ServerData.users.Remove(deadUserId);
+            }
+
+            ///// 관전할건지 나갈건지 선택 /////
 
 
         });
@@ -187,6 +189,19 @@ public class PacketReceiver_Game : MonoBehaviour {
         ServerData.socket.On("ban", (data) => {
 
             jObject = JObject.Parse(data);
+            string id = jObject["id"].ToObject<string>();
+
+            ///// 오브젝트 파괘! /////
+            string deadUserId = jObject["id"].ToObject<string[]>()[0];
+            // 1) 실제 게임오브젝트 인스턴스 삭제 
+            Destroy(InGameData.userObjects[deadUserId]);
+            // 2) InGameData, ServerData에서 삭제
+            InGameData.userObjects.Remove(deadUserId);
+            ServerData.users.Remove(deadUserId);
+
+            if(id == ServerData.myClient.id) { // 근데 그게 나야?
+                gameSceneManager.Exit();
+            }
 
         });
     }

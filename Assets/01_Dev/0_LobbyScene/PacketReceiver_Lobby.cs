@@ -7,30 +7,31 @@ using UnityEngine.SceneManagement;
 
 public class PacketReceiver_Lobby : MonoBehaviour {
 
+    LobbySceneManager lobbySceneManager;
 
-    private void Awake() {
-        Add_MatchStatus();
+    private void Start() {
+
+        lobbySceneManager = this.GetComponent<LobbySceneManager>();
+
     }
 
     // Listeners
 
     JObject jObject;
 
-    private void Add_MatchStatus() {
+    public void Add_MatchStatus() {
 
         ServerData.socket.On("match_status", (data) => { // count, maxCount
-
-            Debug.Log(data);
 
             jObject = JObject.Parse(data);
 
             int count = jObject["count"].ToObject<int>();
             int maxCount = jObject["maxCount"].ToObject<int>();
             
-            this.GetComponent<LobbySceneManager>().setUserCount(count, maxCount);
+            lobbySceneManager.setUserCount(count, maxCount);
             
             if(count == maxCount) {
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene(1);
             }
         });
 
