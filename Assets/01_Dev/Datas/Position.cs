@@ -7,7 +7,4 @@ public class Position {
       this.x = x;
       this.y = y;
    }
-   public bool Equals(Position pos) {
-      return (this.x == pos.x) && (this.y == pos.y);
-   }
 }

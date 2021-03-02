@@ -50,12 +50,12 @@ public class SkillManager : MonoBehaviour
 
         if( skillType == SkillType.SCRATCH ) {
 
-            ServerData.cat.cQueue.Run(anim.GetEnumerator());
+            ServerData.users[ServerData.catId].cQueue.Run(anim.GetEnumerator());
 
         }
         
     }
- 
+
     IEnumerator Cooltime(SkillType skillType)
     {
         while(skillFilter[(int)skillType].fillAmount > 0)
@@ -69,7 +69,7 @@ public class SkillManager : MonoBehaviour
                 case SkillType.BOOST :
                     if(currentCoolTime[(int)skillType] < 0.5f) vel = 2;
                     else vel = 1;
-                    ServerData.cat.velocity = vel;
+                    ServerData.users[ServerData.catId].velocity = vel;
                     break;
 
                 case SkillType.SCRATCH :
@@ -119,7 +119,7 @@ public class SkillManager : MonoBehaviour
         jObject.Add(ServerData.gameId);
         jObject.Add("skill", skillName);
 
-        ServerData.socket.Emit(jObject.ToString());
+        ServerData.socket.EmitJson("skill", jObject.ToString());
     }
 
 }

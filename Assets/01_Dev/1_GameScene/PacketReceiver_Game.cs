@@ -12,13 +12,17 @@ public class PacketReceiver_Game : MonoBehaviour {
 
     private void Start() {
 
-        gameSceneManager = this.GetComponent<GameSceneManager>();
-        moveManager = this.GetComponent<MoveManager>();
-        skillManager = this.GetComponent<SkillManager>();
-
         ServerData.InitializeDataObjects();
         AddListeners();
 
+    }
+
+    private void ManagersInit() {
+        
+        gameSceneManager = this.GetComponent<GameSceneManager>();
+        moveManager = this.GetComponent<MoveManager>();
+        skillManager = this.GetComponent<SkillManager>();
+        
     }
 
     private void AddListeners() {
@@ -33,20 +37,6 @@ public class PacketReceiver_Game : MonoBehaviour {
         Add_GameResult();
 
     }
-
-    public void RemoveListeners() {
-
-        ServerData.socket.Off("render");
-        ServerData.socket.Off("skill_result");
-        ServerData.socket.Off("game_start");
-        ServerData.socket.Off("refresh");
-        ServerData.socket.Off("dead");
-        ServerData.socket.Off("change_cat");
-        ServerData.socket.Off("ban");
-        ServerData.socket.Off("game_result");
-        
-    }
-
     // Listeners
 
     JObject jObject;
@@ -55,7 +45,6 @@ public class PacketReceiver_Game : MonoBehaviour {
 
         ServerData.socket.On("render", (data) => {
 
-
             jObject = JObject.Parse(data);
 
             // ServerData 조지기
@@ -63,7 +52,6 @@ public class PacketReceiver_Game : MonoBehaviour {
             ServerData.gameId = jObject["gameId"].ToObject<string>();
             ServerData.timer = jObject["timer"].ToObject<int>();
             Block[][] blocks = jObject["map"].ToObject<Block[][]>();
-
 
             string socketId = jObject["socketId"].ToObject<string>(); // myId
             Debug.Log("Matched successfully! socket id is : " + socketId);
@@ -75,7 +63,7 @@ public class PacketReceiver_Game : MonoBehaviour {
                 userPair.Value.isMoving = false;
                 userPair.Value.cQueue = new CoroutineQueue(1000000, StartCoroutine);
                 if(userPair.Value.type == UserType.CAT) { // cat 넣어주기
-                    ServerData.cat = userPair.Value.ConvertToCat();
+                    ServerData.catId = userPair.Value.id;
                 }
             }
 
@@ -83,16 +71,16 @@ public class PacketReceiver_Game : MonoBehaviour {
             ServerData.users = usersList;
             // myClient!
             ServerData.myClient = ServerData.users[socketId];
-
             // 렌더링하고 카메라 세팅
             this.GetComponent<GameRenderer>().Render();
             this.GetComponent<CameraWork>().SetCamera();
+
+            ManagersInit();
 
         });
 
     }
 
-    // 패킷 없음! //
     private void Add_GameStart() {
         ServerData.socket.On("game_start", (data) => {
 
@@ -112,7 +100,7 @@ public class PacketReceiver_Game : MonoBehaviour {
             ///// ServerData 조지기 /////
             ServerData.timer = jObject["timer"].ToObject<int>();
 
-            Debug.Log("refreshed : \n" + jObject["map"].ToString());
+            Debug.Log("refreshed : \n" + jObject["animationList"].ToString());
 
             ///// 블록 업데이트 /////
             List<JObject> differedBlockList = jObject["map"].ToObject<List<JObject>>();
@@ -138,7 +126,7 @@ public class PacketReceiver_Game : MonoBehaviour {
 
                 User movingUser = ServerData.users[id];
                 
-                if(movingUser.position.Equals(pos))
+                movingUser.position = pos;
 
                 movingUser.cQueue.Run(moveManager.Move(movingUser, dir));
 
@@ -170,7 +158,7 @@ public class PacketReceiver_Game : MonoBehaviour {
             Debug.Log(data);
             jObject = JObject.Parse(data);
             
-            // ///// 오브젝트 파괘! /////
+            ///// 오브젝트 파괘! /////
             // string[] deadUsers = jObject["id"].ToObject<string[]>();
             // if(deadUsers != null) {
             //     string deadUserId = deadUsers[0];
@@ -192,8 +180,9 @@ public class PacketReceiver_Game : MonoBehaviour {
         ServerData.socket.On("change_cat", (data) => {
 
             jObject = JObject.Parse(data);
-
-            ServerData.cat = ServerData.users[jObject["id"].ToObject<string>()].ConvertToCat();
+            string id = jObject["id"].ToObject<string>();;
+            ServerData.catId = id;
+            ServerData.users[id].ToCat();
 
         });
     }

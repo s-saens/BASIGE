@@ -16,7 +16,6 @@ public class Block
 
    public Color GetColor()
    {
-      Debug.Log(userList[0]); // TODO : 이거 맞냐?
       return ServerData.users[userList[0]].GetColor();
    }
 

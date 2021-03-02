@@ -33,18 +33,19 @@ public class MoveManager : MonoBehaviour
 
             ServerData.myClient.isMoving = true;
             Direction dir = 0;
+            bool isDown = false;
             float deadZone = 0.2f;
 
-            if(dirx > deadZone && dirz > deadZone) dir=Direction.UP;
-            if(dirx < -deadZone && dirz < -deadZone) dir=Direction.DOWN;
-            if(dirx < -deadZone && dirz > deadZone) dir=Direction.LEFT;
-            if(dirx > deadZone && dirz < -deadZone) dir=Direction.RIGHT;
+            if(dirx > deadZone && dirz > deadZone) { dir=Direction.UP; isDown = true; }
+            if(dirx < -deadZone && dirz < -deadZone) { dir=Direction.DOWN; isDown = true; }
+            if(dirx < -deadZone && dirz > deadZone) { dir=Direction.LEFT; isDown = true; }
+            if(dirx > deadZone && dirz < -deadZone) { dir=Direction.RIGHT; isDown = true; }
 
             JObject json = new JObject();
             json.Add("gameId", ServerData.gameId);
             json.Add("direction", (int)dir);
-            ServerData.socket.EmitJson("move", json.ToString(Formatting.None));
-            Debug.Log("무브패킷보냈음!");
+
+            if(isDown) ServerData.socket.EmitJson("move", json.ToString(Formatting.None));
         }
     }
 
@@ -66,6 +67,8 @@ public class MoveManager : MonoBehaviour
         Vector3 dest = player.transform.position + player.transform.forward;
         float dist = Vector3.Distance(player.transform.position,dest);
         float speed = ServerData.myClient.velocity * Time.deltaTime * 4;
+
+        Debug.Log("MOVE IS CALLED");
 
         while(dist >= 0.000001) {
 

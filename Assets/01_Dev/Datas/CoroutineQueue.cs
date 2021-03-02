@@ -58,6 +58,7 @@ public class CoroutineQueue
 	{
 		if (numActive < maxActive)
 		{
+			Debug.Log("Queue Run");
 			var runner = CoroutineRunner(coroutine);
 			coroutineStarter(runner);
 		}

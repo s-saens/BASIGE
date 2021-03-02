@@ -21,7 +21,7 @@ public class User {
 
     // client only
     public bool isMoving;
-    public CoroutineQueue cQueue;
+    public CoroutineQueue cQueue ;
     
     public Color GetColor() {
 
@@ -47,24 +47,11 @@ public class User {
         y = ((float)size)/2;
     }
 
-    public Cat ConvertToCat() {
+    public void ToCat() {
 
-        Cat cat = new Cat();
-
-        cat.type = this.type;
-        cat.id = this.id;
-        cat.nickname = this.nickname;
-        cat.size = this.size;
-        cat.position = this.position;
-        cat.velocity = this.velocity;
-        cat.color = this.color;
-        cat.isAlive = this.isAlive;
-        cat.userState = this.userState;
-        cat.isMoving = this.isMoving;
-        cat.cQueue = this.cQueue;
-        cat.skills = new Dictionary<string, Skill>();
-
-        return cat;
+        this.size = 4;
+        this.velocity = 1;
+        this.type = UserType.CAT;
 
     }
     
